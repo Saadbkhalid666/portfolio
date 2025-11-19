@@ -67,3 +67,4 @@ Used in buttons, tabs, and glow effects:
 #1F1B2E — card hover
 
 rgba(138, 46, 255, 0.4) —
+
