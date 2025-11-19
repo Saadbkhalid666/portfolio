@@ -1,1 +1,45 @@
 @import "tailwindcss";
+
+body {
+  margin: 0;
+  padding: 0;
+  background: #0d0b14; /* pure black base */
+  overflow-x: hidden;
+  position: relative;
+}
+
+body::before,
+body::after {
+  content: "";
+  position: fixed;
+  width: 450px;
+  height: 450px;
+  background: #7b15dc; /* purple-600 */
+  filter: blur(180px);
+  opacity: 0.45;
+  animation: pulseblur 10s ease-in-out infinite;
+  z-index: -1;
+}
+
+body::before {
+  top: -100px;
+  left: -100px;
+}
+
+body::after {
+  bottom: -120px;
+  right: -120px;
+  background: #9333ea; 
+}
+
+@keyframes pulseblur {
+  0%, 100% {
+    opacity: 0.45;
+    transform: scale(1);
+    
+  }
+  50% {
+    opacity: 0.85;
+    transform: scale(1.4);
+  }
+}
