@@ -2,7 +2,7 @@ import { gsap } from "gsap";
 import { useEffect, useRef, useState } from "react";
 import { MdMenu } from "react-icons/md";
 import {  FiX } from "react-icons/fi";
-import { Link } from "react-slick";
+import { Link } from "react-scroll";
 export const NavBar = () => {
   const [isShow, setIsShow] = useState(true)
   const desktopNavRef = useRef();
