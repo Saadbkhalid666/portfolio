@@ -2,17 +2,49 @@ import myimg from "../../assets/images/myimg.png"
 import { TypingHero } from "../../components/heading/heading";
 import "./hero.css"
 import { FaGithub, FaInstagram, FaLinkedinIn, FaSnapchat, FaTiktok, FaTwitter } from "react-icons/fa";
+import gsap from "gsap"
+import { useEffect, useRef } from "react";
 export const Hero = () => {
+
+    const nameRef = useRef()
+    const passionRef = useRef()
+    const paraRef = useRef()
+    
+    useEffect(()=>{
+        gsap.from(nameRef.current,{
+            x:-200,
+            opacity:0,
+            duration: 1.2,  
+            ease:"power3.out"
+        })
+        gsap.from(passionRef.current,{
+            y:-200,
+            opacity:0,
+            duration:1.3,
+            ease:"power3.out"
+        })
+        
+        gsap.from(paraRef.current,{
+            opacity:0,
+            duration:1.3,
+            ease:"power3.out"
+        })
+        
+    })
+
   return (
-    <section className="relative text-white min-h-screen flex items-center">
+    <section className="relative text-white min-h-screen flex items-center" id="hero">
       <div className="container mx-auto px-6 lg:px-20 flex flex-col-reverse lg:flex-row items-center gap-12">
         {/* Text Content */}
         <div className="flex-1 flex flex-col gap-6">
-          <h2 className="text-3xl sm:text-4xl font-bold font-serif text-[#a3a3ff]">
+          <h2 ref={nameRef} className="text-3xl sm:text-4xl font-bold font-serif text-[#a3a3ff]">
             I am Saad
           </h2>
+          <span ref={passionRef}>
+
           <TypingHero   />
-          <p className="text-gray-300 max-w-xl text-lg">
+          </span>
+          <p className="text-gray-300 max-w-xl text-lg" ref={paraRef}>
             Passionate about building web apps with modern technologies. I focus on creating interactive, responsive, and scalable full-stack solutions.
           </p>
 
@@ -24,7 +56,7 @@ export const Hero = () => {
 
   {/* GitHub */}
   <a
-    href="#"
+    href="https://github.com/Saadbkhalid666"
     className="text-white drop-shadow-[0_0_8px_white] hover:drop-shadow-[0_0_15px_white] hover:scale-110 transition duration-300"
   >
     <FaGithub />

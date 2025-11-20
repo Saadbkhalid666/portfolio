@@ -29,11 +29,11 @@ useEffect(() => {
   return (
     <>
     {/* desktop navbar  */}
-      <div ref={desktopNavRef} className="container mx-auto hidden lg:block">
-        <div className="desktop-nav-container  p-6 mt-4 rounded-4xl bg-[#120F1F] ">
+      <div ref={desktopNavRef} className="container  mx-auto hidden lg:block">
+        <div className="desktop-nav-container   p-6 mt-4 rounded-4xl bg-[#120F1F] ">
           <nav>
             <ul className="flex flex-row text-white font-bold lg:text-lg text-md justify-center  gap-16  xl:gap-26 2xl:gap-36">
-              <Link to="/hero" className="hover:scale-110  hover:text-purple-300 transition-all duration-300 ease-in-out hover:cursor-pointer">
+              <Link to="hero" smooth={true} className="hover:scale-110  hover:text-purple-300 transition-all duration-300 ease-in-out hover:cursor-pointer">
                 Home
               </Link>
               <Link className="hover:scale-110 hover:text-purple-300 hover:cursor-pointer transition-all duration-300 ease-in-out">
