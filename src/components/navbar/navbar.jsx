@@ -8,7 +8,6 @@ export const NavBar = () => {
   const [isShow, setIsShow] = useState(true)
   const desktopNavRef = useRef();
 const mobileNavRef = useRef();
-
 useEffect(() => {
   gsap.from(desktopNavRef.current, {
     y: -100,
@@ -40,7 +39,7 @@ useEffect(() => {
               <Link className="hover:scale-110 hover:text-purple-300 hover:cursor-pointer transition-all duration-300 ease-in-out">
                 About
               </Link>
-              <Link className="hover:scale-110 hover:text-purple-300 hover:cursor-pointer transition-all duration-300 ease-in-out">
+              <Link to="services" smooth={true} className="hover:scale-110 hover:text-purple-300 hover:cursor-pointer transition-all duration-300 ease-in-out">
                 Services
               </Link>
               <Link className="lg:text-xl text-lg text-purple-400 ">Saad Bin Khalid</Link>
@@ -84,7 +83,7 @@ useEffect(() => {
               <Link className="hover:scale-110  hover:text-purple-300 transition-all duration-300 ease-in-out hover:cursor-pointer">
                 Home
               </Link>
-              <Link className="hover:scale-110 active:text-purple-300 hover:cursor-pointer transition-all duration-300 ease-in-out">
+              <Link to="services" smooth={true} className="hover:scale-110 active:text-purple-300 hover:cursor-pointer transition-all duration-300 ease-in-out">
                 About
               </Link>
               <Link className="hover:scale-110 hover:text-purple-300 hover:cursor-pointer transition-all duration-300 ease-in-out">
