@@ -1,6 +1,7 @@
 import { FaChevronCircleUp } from "react-icons/fa";
 import { NavBar } from "./components/navbar/navbar";
 import { Hero } from "./sections/hero/hero";
+ 
 import { StatsNAcheivments } from "./sections/stats/Stats";
 
 function App() {
