@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import { MdMenu } from "react-icons/md";
 import {  FiX } from "react-icons/fi";
 import { Link } from "react-scroll";
+import { FaHome } from "react-icons/fa";
 export const NavBar = () => {
   const [isShow, setIsShow] = useState(true)
   const desktopNavRef = useRef();
