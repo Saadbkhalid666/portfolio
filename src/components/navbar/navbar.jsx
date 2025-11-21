@@ -30,7 +30,7 @@ useEffect(() => {
   return (
     <>
     {/* desktop navbar  */}
-      <div ref={desktopNavRef} className="container  mx-auto hidden lg:block">
+      <div ref={desktopNavRef} className="container  mx-auto ml-2 mr-2  hidden lg:block">
         <div className="desktop-nav-container   p-6 mt-4 rounded-4xl bg-[#120F1F] ">
           <nav>
             <ul className="flex flex-row text-white font-bold lg:text-lg text-md justify-center  gap-16  xl:gap-26 2xl:gap-36">
@@ -59,8 +59,8 @@ useEffect(() => {
       </div>
 
       {/* short screens navbar  */}
-      <div ref={mobileNavRef} className="container mx-auto ml-2 mr-2 block lg:hidden ">
-        <div className="desktop-nav-container sticky p-6 mt-4 rounded-4xl bg-[#120F1F] ">
+      <div ref={mobileNavRef} className="container mx-auto  block lg:hidden ">
+        <div className="desktop-nav-container  p-4 mt-4 rounded-4xl bg-[#120F1F] ">
           <div className="text-white text-2xl font-bold flex flex-row justify-between">
             <span className="text-purple-400">Saad Bin Khalid</span>
             <span onClick={() => setIsShow((show) => !show)}>

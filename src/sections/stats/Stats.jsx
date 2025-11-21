@@ -13,25 +13,25 @@ export const StatsNAcheivments = () => {
       ">
         
         <div>
-          <CountUp from={0} to={1000} direction="up" duration={1} className="count-up-text inline text-white lg:text-6xl " />
+          <CountUp from={0} to={1000} direction="up" duration={1} className="count-up-text inline text-white text-4xl lg:text-6xl " />
           <span className="lg:text-6xl">+</span>
           <p className="md:text-2xl lg:text-4xl">Code Contributions</p>
         </div>
 
         <div>
-          <CountUp from={0} to={8} direction="up" duration={0.1} className="count-up-text inline text-white lg:text-6xl" />
+          <CountUp from={0} to={8} direction="up" duration={0.1} className="count-up-text inline text-white lg:text-6xl text-4xl" />
           <span className="lg:text-6xl">+</span>
           <p className="md:text-2xl lg:text-4xl">Projects</p>
         </div>
 
         <div>
-          <CountUp from={0} to={20} direction="up" duration={1} className="count-up-text inline text-white lg:text-6xl" />
+          <CountUp from={0} to={20} direction="up" duration={1} className="count-up-text inline text-white lg:text-6xl text-4xl" />
           <span className="lg:text-6xl">+</span>
           <p className="md:text-2xl lg:text-4xl">Tech Stack Skills</p>
         </div>
 
         <div>
-          <CountUp from={0} to={650} direction="up" duration={1} className="count-up-text inline text-white lg:text-6xl" />
+          <CountUp from={0} to={650} direction="up" duration={1} className="count-up-text inline text-white lg:text-6xl text-4xl" />
           <span className="lg:text-6xl">+</span>
           <p className="md:text-2xl lg:text-4xl">Followers</p>
         </div>
