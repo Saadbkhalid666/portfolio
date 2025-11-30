@@ -42,11 +42,11 @@ useEffect(() => {
               <Link to="services" smooth={true} className="hover:scale-110 hover:text-purple-300 hover:cursor-pointer transition-all duration-300 ease-in-out">
                 Services
               </Link>
-              <Link className="lg:text-xl text-lg text-purple-400 ">Saad Bin Khalid</Link>
+              <Link className="lg:text-xl text-lg text-purple-400 hover:scale-110 transition-all duration-150 ease-in-out ">Saad Bin Khalid</Link>
               <Link className="hover:scale-110 transition-all duration-300 ease-in-out hover:text-purple-300 hover:cursor-pointer">
                 Resume
               </Link>
-              <Link className="hover:scale-110 hover:text-purple-300 hover:cursor-pointer transition-all duration-300 ease-in-out">
+              <Link to="portfolio" smooth={true} className="hover:scale-110 hover:text-purple-300 hover:cursor-pointer transition-all duration-300 ease-in-out">
                 Portfolio
               </Link>
               <Link className="hover:scale-110 transition-all duration-300 ease-in-out hover:text-purple-300 hover:cursor-pointer">
@@ -92,7 +92,7 @@ useEffect(() => {
               <Link className="hover:scale-110 transition-all duration-300 ease-in-out hover:text-purple-300 hover:cursor-pointer">
                 Resume
               </Link>
-              <Link className="hover:scale-110 hover:text-purple-300 hover:cursor-pointer transition-all duration-300 ease-in-out">
+              <Link to="portfolio" smooth={true} className="hover:scale-110 hover:text-purple-300 hover:cursor-pointer transition-all duration-300 ease-in-out">
                 Portfolio
               </Link>
               <Link className="hover:scale-110 transition-all duration-300 ease-in-out hover:text-purple-300 hover:cursor-pointer">
