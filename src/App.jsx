@@ -1,5 +1,4 @@
 import { FaChevronCircleUp } from "react-icons/fa";
-import { NavBar } from "./components/navbar/navbar";
 import { Hero } from "./sections/hero/hero";
 
 import { StatsNAcheivments } from "./sections/stats/Stats";
@@ -9,7 +8,6 @@ import { Portfolio } from "./sections/portfolio/portfolio";
 function App() {
   return (
     <div className="relative">
-      <NavBar />
       <Hero />
       <StatsNAcheivments />
 
