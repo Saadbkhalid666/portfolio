@@ -1,0 +1,72 @@
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Navigation, Pagination, Autoplay } from "swiper/modules";
+import "swiper/css";
+import "swiper/css/navigation";
+import "swiper/css/pagination";
+
+export const AchievementsSlider = () => {
+  const achievements = [
+    {
+      title: "Student of the Year",
+      desc: "Awarded for academic excellence and discipline.",
+      year: "2022",
+    },
+    {
+      title: "Freelance Milestone",
+      desc: "Completed first international client project successfully.",
+      year: "2024",
+    },
+    {
+      title: "Speech Competition Winner (English)",
+      desc: "Secured 1st position in inter-school speech contest.",
+      year: "2019",
+    },
+    {
+      title: "Speech Competition Winner (Urdu)",
+      desc: "Won district-level Urdu speech competition.",
+      year: "2020",
+    },
+    {
+      title: "Quiz Competition Champion",
+      desc: "Achieved top rank in science & general knowledge quiz.",
+      year: "2021",
+    },
+    {
+      title: "Certification Completed",
+      desc: "Completed Web Development, AI, and Cloud fundamentals.",
+      year: "2023",
+    },
+  ];
+
+  return (
+    <section
+      id="achievements"
+      className="w-full py-16 px-4 md:px-10 lg:px-20 text-white"
+    >
+      <h1 className="text-4xl md:text-5xl font-extrabold text-center bg-clip-text text-transparent bg-linear-to-r from-purple-600 via-purple-300 to-white mb-10">
+        Achievements
+      </h1>
+
+      <Swiper
+        modules={[Navigation, Pagination, Autoplay]}
+        spaceBetween={30}
+        slidesPerView={1}
+        navigation
+        pagination={{ clickable: true }}
+        autoplay={{ delay: 2500 }}
+        loop={true}
+        className="mySwiper"
+      >
+        {achievements.map((item, index) => (
+          <SwiperSlide key={index}>
+            <div className="bg-[#120F1F] border border-purple-400/20 shadow-lg shadow-purple-600/20 rounded-2xl p-8 max-w-lg mx-auto text-center hover:scale-105 transition-all duration-300">
+              <h2 className="text-2xl font-bold text-purple-300">{item.title}</h2>
+              <p className="mt-3 text-gray-300">{item.desc}</p>
+              <p className="mt-4 text-sm text-purple-400">({item.year})</p>
+            </div>
+          </SwiperSlide>
+        ))}
+      </Swiper>
+    </section>
+  );
+};
