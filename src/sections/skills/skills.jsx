@@ -45,7 +45,10 @@ export const Skills = () => {
 
   return (
     <section id="skills" className="py-16 text-white">
-      <h1 className="text-center text-5xl font-bold mb-12">My Tech Stack</h1>
+      <h1 className="bg-clip-text text-transparent
+        bg-linear-to-r to-purple-800 via-purple-300 from-white
+        text-4xl sm:text-5xl md:text-6xl 
+        text-center font-extrabold font-serif overflow-hidden mb-12">My Tech Stack</h1>
 
       <div ref={containerRef} className="container grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-10">
         {/* ===== LANGUAGES ===== */}

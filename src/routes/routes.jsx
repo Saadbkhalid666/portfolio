@@ -9,7 +9,7 @@ export const router = createBrowserRouter([
 ])
 
 function HomeLayout(){
-    return <div className="relative p-2">
+    return <div className=" ">
     <NavBar  />
     <Outlet  />
     </div>
