@@ -3,7 +3,6 @@ import { useEffect, useRef, useState } from "react";
 import { MdMenu } from "react-icons/md";
 import { FiX } from "react-icons/fi";
 import { Link } from "react-scroll";
-import { FaHome } from "react-icons/fa";
 export const NavBar = () => {
   const [isShow, setIsShow] = useState(true);
   const desktopNavRef = useRef();
@@ -53,7 +52,7 @@ export const NavBar = () => {
                 <Link className="lg:text-xl text-lg text-purple-400 hover:scale-110 transition-all duration-150 ease-in-out ">
                   Saad Bin Khalid
                 </Link>
-                <Link className="hover:scale-110 transition-all duration-300 ease-in-out hover:text-purple-300 hover:cursor-pointer">
+                <Link to="resume" smooth={true} className="hover:scale-110 transition-all duration-300 ease-in-out hover:text-purple-300 hover:cursor-pointer">
                   Resume
                 </Link>
                 <Link
@@ -112,7 +111,7 @@ export const NavBar = () => {
               <Link className="hover:scale-110 hover:text-purple-300 hover:cursor-pointer transition-all duration-300 ease-in-out">
                 Services
               </Link>
-              <Link className="hover:scale-110 transition-all duration-300 ease-in-out hover:text-purple-300 hover:cursor-pointer">
+              <Link to="resume" smooth={true} className="hover:scale-110 transition-all duration-300 ease-in-out hover:text-purple-300 hover:cursor-pointer">
                 Resume
               </Link>
               <Link
