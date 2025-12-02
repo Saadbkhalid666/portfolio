@@ -44,7 +44,7 @@ export const Skills = () => {
   }, []);
 
   return (
-    <section id="skills" className="py-16 text-white">
+    <section id="resume" className="py-16 text-white">
       <h1 className="bg-clip-text text-transparent
         bg-linear-to-r to-purple-800 via-purple-300 from-white
         text-4xl sm:text-5xl md:text-6xl 
