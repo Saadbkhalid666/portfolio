@@ -39,7 +39,9 @@ export const NavBar = () => {
                 >
                   Home
                 </Link>
-                <Link className="hover:scale-110 hover:text-purple-300 hover:cursor-pointer transition-all duration-300 ease-in-out">
+                <Link 
+                to="about"
+                smooth={true} className="hover:scale-110 hover:text-purple-300 hover:cursor-pointer transition-all duration-300 ease-in-out">
                   About
                 </Link>
                 <Link
@@ -102,13 +104,14 @@ export const NavBar = () => {
                 Home
               </Link>
               <Link
-                to="services"
+                to="about"
                 smooth={true}
                 className="hover:scale-110 active:text-purple-300 hover:cursor-pointer transition-all duration-300 ease-in-out"
               >
                 About
               </Link>
-              <Link className="hover:scale-110 hover:text-purple-300 hover:cursor-pointer transition-all duration-300 ease-in-out">
+              <Link  to="services"
+                smooth={true} className="hover:scale-110 hover:text-purple-300 hover:cursor-pointer transition-all duration-300 ease-in-out">
                 Services
               </Link>
               <Link to="resume" smooth={true} className="hover:scale-110 transition-all duration-300 ease-in-out hover:text-purple-300 hover:cursor-pointer">

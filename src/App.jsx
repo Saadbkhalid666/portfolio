@@ -8,12 +8,14 @@ import { Skills } from "./sections/skills/skills";
 import { AchievementsSlider } from "./sections/Achievements/Achievements";
 import { EducationExperience } from "./sections/educations/Education";
 import { Testimonials } from "./sections/Testimonial/Testimonial";
+import { About } from "./sections/about/about";
 
 function App() {
   return (
     <div className="">
       <Hero />
       <StatsNAcheivments />
+      <About   />
 
       <Services />
       <Portfolio    />
