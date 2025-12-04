@@ -1,0 +1,10 @@
+export { default as certi1 } from "./certi1.PNG";
+export { default as certi2 } from "./certi2.PNG";
+export { default as certi3 } from "./certi3.PNG";
+export { default as certi4 } from "./certi4.PNG";
+export { default as certi5 } from "./certi5.PNG";
+export { default as certi6 } from "./certi6.PNG";
+export { default as certi7 } from "./certi7.PNG";
+export { default as certi8 } from "./certi8.PNG";
+export { default as certi9 } from "./certi9.PNG";
+export { default as certi11 } from "./certi11.jpg";
