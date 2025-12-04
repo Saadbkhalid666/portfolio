@@ -15,6 +15,7 @@ import { Link } from "react-scroll";
 function App() {
   return (
     <div className="">
+      <title>Saad Bin Khalid - Portfolio</title>
       <Hero />
       <StatsNAcheivments />
       <About   />
