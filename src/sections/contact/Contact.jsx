@@ -28,15 +28,15 @@ const ContactForm = () => {
 
     emailjs
       .send(
-        "service_dd1w1up",
-        "template_zojdev6",
+        import.meta.env.VITE_SERVICE_ID,
+        import.meta.env.VITE_TEMPLATE_ID,
         {
           name: data.name,
           email: data.email,
           service: data.service,
           message: data.message,
         },
-        "S1sLDURh_NwUlm67S"
+        import.meta.env.VITE_PUBLIC_API_KEY
       )
       .then(() => {
         toast.success("Message sent successfully.");
