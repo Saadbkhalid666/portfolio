@@ -64,7 +64,7 @@ export const NavBar = () => {
                 >
                   Portfolio
                 </Link>
-                <Link className="hover:scale-110 transition-all duration-300 ease-in-out hover:text-purple-300 hover:cursor-pointer">
+                <Link to="contact" smooth={true} className="hover:scale-110 transition-all duration-300 ease-in-out hover:text-purple-300 hover:cursor-pointer">
                   Contact Us
                 </Link>
               </ul>
@@ -124,7 +124,7 @@ export const NavBar = () => {
               >
                 Portfolio
               </Link>
-              <Link className="hover:scale-110 transition-all duration-300 ease-in-out hover:text-purple-300 hover:cursor-pointer">
+              <Link to="contact" smooth={true} className="hover:scale-110 transition-all duration-300 ease-in-out hover:text-purple-300 hover:cursor-pointer">
                 Contact Us
               </Link>
             </ul>
