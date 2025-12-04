@@ -3,6 +3,8 @@ import { useEffect, useRef, useState } from "react";
 import { MdMenu } from "react-icons/md";
 import { FiX } from "react-icons/fi";
 import { Link } from "react-scroll";
+import { NavLink } from "react-router-dom";
+
 export const NavBar = () => {
   const [isShow, setIsShow] = useState(true);
   const desktopNavRef = useRef();
@@ -23,6 +25,7 @@ export const NavBar = () => {
       ease: "power3.out",
     });
   }, []);
+  
 
   return (
     <>
@@ -32,13 +35,12 @@ export const NavBar = () => {
           <div className="desktop-nav-container pt-6 pb-6 pl-10 pr-10 mt-4 rounded-4xl bg-[#120F1F] w-max mx-auto">
             <nav>
               <ul className="flex flex-row text-white font-bold lg:text-lg text-md justify-center  gap-16  xl:gap-26 2xl:gap-36">
-                <Link
-                  to="hero"
-                  smooth={true}
+                <NavLink
+                  to="/"
                   className="hover:scale-110  hover:text-purple-300 transition-all duration-300 ease-in-out hover:cursor-pointer"
                 >
                   Home
-                </Link>
+                </NavLink>
                 <Link 
                 to="about"
                 smooth={true} className="hover:scale-110 hover:text-purple-300 hover:cursor-pointer transition-all duration-300 ease-in-out">
@@ -100,9 +102,9 @@ export const NavBar = () => {
         >
           <nav>
             <ul className="flex flex-col text-white font-bold text-md justify-center gap-4">
-              <Link className="hover:scale-110  hover:text-purple-300 transition-all duration-300 ease-in-out hover:cursor-pointer">
+              <NavLink to={"/"} className="hover:scale-110  hover:text-purple-300 transition-all duration-300 ease-in-out hover:cursor-pointer">
                 Home
-              </Link>
+              </NavLink>
               <Link
                 to="about"
                 smooth={true}

@@ -1,4 +1,5 @@
 import { FaGithub, FaLinkedin, FaInstagram, FaTwitter } from "react-icons/fa";
+import { NavLink } from "react-router-dom";
 import { Link } from "react-scroll";
 export const Footer = () => {
 
@@ -18,7 +19,7 @@ export const Footer = () => {
         <div className="flex flex-col gap-2">
           <h2 className="font-semibold text-lg text-purple-400">Navigate</h2>
           <ul className="space-y-1">
-            <li><Link to="hero" smooth={true} className="hover:text-purple-500 transition">Home</Link></li>
+            <li><NavLink to="/"  className="hover:text-purple-500 transition">Home</NavLink></li>
             <li><Link to="portfolio" smooth={true} className="hover:text-purple-500 transition">Portfolio</Link></li>
             <li><Link to="contact" smooth={true} className="hover:text-purple-500 transition">Contact</Link></li>
             <li><Link to="about" smooth={true} className="hover:text-purple-500 transition">About</Link></li>
