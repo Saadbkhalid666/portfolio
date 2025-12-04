@@ -51,7 +51,7 @@ const ContactForm = () => {
   };
 
   return (
-    <div className="max-w-6xl mx-auto px-4 py-12">
+    <div id="contact" className="max-w-6xl mx-auto px-4 py-12">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         {/* Left Card - Contact Form */}
         <div className="p-8 rounded-lg shadow-lg space-y-6 bg-purple-950/20 text-white border border-gray-700">
