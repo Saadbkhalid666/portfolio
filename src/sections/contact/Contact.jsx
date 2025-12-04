@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import emailjs from "emailjs-com";
 import toast, { Toaster } from "react-hot-toast";
 import { useState } from "react";
+import "./contact.css";
 
 const MAX_MESSAGE_SIZE = 50000; // approx 50KB text limit
 
