@@ -9,6 +9,7 @@ import { AchievementsSlider } from "./sections/Achievements/Achievements";
 import { EducationExperience } from "./sections/educations/Education";
 import { Testimonials } from "./sections/Testimonial/Testimonial";
 import { About } from "./sections/about/about";
+import ContactForm from "./sections/contact/Contact";
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
       <AchievementsSlider    />
       <EducationExperience   />
       <Testimonials    />
+      <ContactForm   />
       <FaChevronCircleUp className="fixed right-10 bottom-10 animate-pulse text-purple-600  hover:scale-110 transition-all duration-150 ease-in-out hover:cursor-pointer drop-shadow-[0px_0px_10px_purple]  text-4xl" />
     </div>
   );

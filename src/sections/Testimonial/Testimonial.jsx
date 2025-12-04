@@ -55,7 +55,7 @@ export const Testimonials = () => {
   return (
     <section
       id="testimonials"
-      className="py-20 w-full bg-[#060010] text-white flex flex-col items-center"
+      className="py-20 w-full  text-white flex flex-col items-center"
       aria-label="Client testimonials for Saad Bin Khalid"
     >
       {/* JSON-LD Schema for SEO */}
