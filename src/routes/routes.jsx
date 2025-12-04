@@ -6,6 +6,8 @@ import { Footer } from "../sections/footer/footer";
 import { ChatWat } from "../pages/ChatWat/chatwat";
 import { AutoLogAI } from "../pages/AutoLogAI/autologai";
 import { KSTraders } from "../pages/KS-Traders/kstraders";
+import { MRSEnterprises } from "../pages/MRSEnterprise/mrsenterprise";
+import { CalcMate } from "../pages/calculator/calculator";
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -15,7 +17,9 @@ export const router = createBrowserRouter([
       { path: "/neurovisionx", element: <NeuroVisionX /> },
       { path: "/chatwat", element: <ChatWat /> },
       { path: "/autologai", element: <AutoLogAI /> },
-      {path:'/ks-traders', element:<KSTraders    />}
+      {path:'/ks-traders', element:<KSTraders    />},
+      {path:'/mrs-enterprise', element: <MRSEnterprises    />},
+      {path:'/calcmate', element:<CalcMate   />}
     ],
   },
 ]);
