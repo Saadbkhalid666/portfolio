@@ -50,7 +50,7 @@ export const Skills = () => {
         text-4xl sm:text-5xl md:text-6xl 
         text-center font-extrabold font-serif overflow-hidden mb-12">My Tech Stack</h1>
 
-      <div ref={containerRef} className="container grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-10">
+      <div ref={containerRef} className="container grid grid-cols-3 lg:grid-cols-6 gap-10">
         {/* ===== LANGUAGES ===== */}
         <SkillCard className="skill-card" title="HTML" color="text-[#ff6b35]" icon={<FaHtml5 />} />
         <SkillCard className="skill-card" title="CSS" color="text-[#2563eb]" icon={<FaCss3 />} />
