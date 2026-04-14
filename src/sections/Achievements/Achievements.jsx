@@ -24,7 +24,6 @@ export const AchievementsSlider = () => {
   return (
     <>
       <Helmet>
-        <title>Achievements | Saad Bin Khalid Portfolio</title>
         <meta name="description" content="Explore Saad Bin Khalid's personal and professional achievements, including freelance excellence, speech awards, science exhibitions, and academic accolades." />
         <meta name="keywords" content="Saad Bin Khalid, achievements, awards, freelance developer, student of the year, certifications, web development achievements" />
         <meta property="og:title" content="Achievements | Saad Bin Khalid Portfolio" />
