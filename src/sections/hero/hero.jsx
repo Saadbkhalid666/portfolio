@@ -1,7 +1,7 @@
 import myimg from "../../assets/images/myimg.png"
 import { TypingHero } from "../../components/heading/heading";
 import "./hero.css"
-import { FaGithub, FaInstagram, FaLinkedinIn, FaSnapchat, FaTiktok, FaTwitter } from "react-icons/fa";
+import { FaDev, FaGithub, FaInstagram, FaLinkedinIn, FaSnapchat, FaTiktok, FaTwitter } from "react-icons/fa";
 import gsap from "gsap"
 import { useEffect, useRef } from "react";
 import { Link } from "react-scroll";
@@ -77,23 +77,23 @@ export const Hero = () => {
                 <FaGithub />
               </a>
 
-              <a href="#" className="text-[#0A66C2] drop-shadow-[0_0_8px_#0A66C2] hover:drop-shadow-[0_0_15px_#0A66C2] hover:scale-110 transition duration-300">
+              <a href="https://www.linkedin.com/in/saadbinkhalid666/" className="text-[#0A66C2] drop-shadow-[0_0_8px_#0A66C2] hover:drop-shadow-[0_0_15px_#0A66C2] hover:scale-110 transition duration-300">
                 <FaLinkedinIn />
               </a>
 
-              <a href="#" className="text-pink-500 drop-shadow-[0_0_8px_#ec4899] hover:drop-shadow-[0_0_15px_#ec4899] hover:scale-110 transition duration-300">
+              <a href="https://www.instagram.com/saadbinkhalidd" className="text-pink-500 drop-shadow-[0_0_8px_#ec4899] hover:drop-shadow-[0_0_15px_#ec4899] hover:scale-110 transition duration-300">
                 <FaInstagram />
               </a>
 
-              <a href="#" className="text-[#1DA1F2] drop-shadow-[0_0_8px_#1DA1F2] hover:drop-shadow-[0_0_15px_#1DA1F2] hover:scale-110 transition duration-300">
+              <a href="https://x.com/saadrajpoot666" className="text-[#1DA1F2] drop-shadow-[0_0_8px_#1DA1F2] hover:drop-shadow-[0_0_15px_#1DA1F2] hover:scale-110 transition duration-300">
                 <FaTwitter />
               </a>
 
-              <a href="#" className="text-white drop-shadow-[0_0_8px_#ff0050] hover:drop-shadow-[0_0_15px_#ff0050] hover:scale-110 transition duration-300">
-                <FaTiktok />
+              <a href="https://dev.to/saadbinkhalid" target="_blank" rel="noreferrer" className="text-white drop-shadow-[0_0_8px_#ffffff] hover:drop-shadow-[0_0_15px_#ffffff] hover:scale-110 transition duration-300">
+                <FaDev />
               </a>
 
-              <a href="#" className="text-[#FFFC00] drop-shadow-[0_0_8px_#FFFC00] hover:drop-shadow-[0_0_15px_#FFFC00] hover:scale-110 transition duration-300">
+              <a href="https://www.snapchat.com/@saadrajpoot666" className="text-[#FFFC00] drop-shadow-[0_0_8px_#FFFC00] hover:drop-shadow-[0_0_15px_#FFFC00] hover:scale-110 transition duration-300">
                 <FaSnapchat />
               </a>
 
@@ -112,7 +112,7 @@ export const Hero = () => {
             />
           </div>
         </div>
-
+ 
       </div>
     </section>
   );

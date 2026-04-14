@@ -39,7 +39,7 @@ export const Footer = () => {
           <div className="flex gap-4 mt-2">
             <a href="https://github.com/saadbkhalid666" target="_blank" rel="noreferrer" className="hover:text-purple-500 transition"><FaGithub size={24} /></a>
             <a href="https://linkedin.com/in/saadbinkhalid666" target="_blank" rel="noreferrer" className="hover:text-purple-500 transition"><FaLinkedin size={24} /></a>
-            <a href="https://instagram.com/sagit_saad" target="_blank" rel="noreferrer" className="hover:text-purple-500 transition"><FaInstagram size={24} /></a>
+            <a href="https://instagram.com/saadbinkhalidd" target="_blank" rel="noreferrer" className="hover:text-purple-500 transition"><FaInstagram size={24} /></a>
             <a href="https://x.com/saadrajpoot666" target="_blank" rel="noreferrer" className="hover:text-purple-500 transition"><FaTwitter size={24} /></a>
           </div>
         </div>

@@ -25,7 +25,7 @@ export const StatsNAcheivments = () => {
         </div>
 
         <div>
-          <CountUp from={0} to={20} direction="up" duration={1} className="count-up-text inline text-white lg:text-6xl text-4xl" />
+          <CountUp from={0} to={15} direction="up" duration={1} className="count-up-text inline text-white lg:text-6xl text-4xl" />
           <span className="lg:text-6xl">+</span>
           <p className="md:text-2xl lg:text-4xl">Tech Stack Skills</p>
         </div>
