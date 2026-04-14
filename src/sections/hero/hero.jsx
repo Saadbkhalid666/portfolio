@@ -38,8 +38,11 @@ export const Hero = () => {
     <section className="relative text-white min-h-screen flex items-center" id="hero">
       <div className="container mx-auto px-6 lg:px-20 flex flex-col-reverse lg:flex-row items-center gap-12">
         
+        
+
         {/* Text Content */}
         <div className="flex-1 flex flex-col gap-6">
+        
           
           <h2 ref={nameRef} className="text-3xl sm:text-4xl font-bold font-serif text-[#a3a3ff]">
             I am Saad

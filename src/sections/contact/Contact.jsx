@@ -5,7 +5,7 @@ import emailjs from "@emailjs/browser";
 import { useState } from "react";
 
 const MAX_MESSAGE_SIZE = 50000; // approx 50KB text limit
-
+ 
 const ContactForm = () => {
   const [loading, setLoading] = useState(false);
   const {
@@ -54,8 +54,8 @@ const ContactForm = () => {
   return (
     <section id="contact" className="relative w-full py-24 px-4 md:px-10 lg:px-20 text-white overflow-hidden">
       {/* Ambient background glows */}
-      <div className="absolute left-[-10%] top-[20%] w-[40rem] h-[40rem] bg-purple-900/10 blur-[150px] rounded-full pointer-events-none -z-10"></div>
-      <div className="absolute right-[-10%] bottom-[-10%] w-[30rem] h-[30rem] bg-purple-600/10 blur-[130px] rounded-full pointer-events-none -z-10"></div>
+      <div className="absolute left-[-10%] top-[20%] w-160 h-160 bg-purple-900/10 blur-[150px] rounded-full pointer-events-none -z-10"></div>
+      <div className="absolute right-[-10%] bottom-[-10%] w-160 h-160 bg-purple-600/10 blur-[130px] rounded-full pointer-events-none -z-10"></div>
 
       <div className="text-center mb-16 md:mb-20 relative">
         <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold bg-clip-text text-transparent bg-linear-to-r from-purple-400 via-purple-300 to-white inline-block pb-2">
