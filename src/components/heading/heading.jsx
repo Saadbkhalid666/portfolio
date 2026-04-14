@@ -4,14 +4,11 @@ export const TypingHero = () => {
   const words = [
     "Full Stack Developer",
     "App Developer",
-    "Flutter Developer",
     "React Developer",
     "Angular Developer",
     "Django Developer",
-    "Flask Developer",
     "AI Integrator",
-    "SaaS Developer",
-    "JavaScript Developer",
+    "SaaS Developer"
   ];
 
   const [text, setText] = useState("");
