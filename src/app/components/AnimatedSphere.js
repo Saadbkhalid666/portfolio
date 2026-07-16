@@ -70,10 +70,10 @@ const HologramShaderMaterial = {
       vNormal = normalize(normalMatrix * normal);
       
       // Calculate vertex displacement using noise + time
-      float noise = snoise(position * 1.5 + uTime * 0.8);
+      float noise = snoise(position * 1.5 + uTime * 0.5);
       
       // Move vertices along their normal directions to create organic bumps
-      vec3 displacedPosition = position + normal * (noise * 0.25);
+      vec3 displacedPosition = position + normal * (noise * 0.3);
       
       vec4 modelViewPosition = modelViewMatrix * vec4(displacedPosition, 1.0);
       vViewPosition = -modelViewPosition.xyz;
@@ -94,7 +94,7 @@ const HologramShaderMaterial = {
       vec3 viewDir = normalize(vViewPosition);
 
       // Fresnel formula: glows brighter on the outer edges of the sphere
-      float intensity = pow(1.0 - max(dot(normal, viewDir), 0.0), uGlowPower);
+      float intensity = pow(0.9 - max(dot(normal, viewDir), 0.0), uGlowPower);
       
       // Soft center color mixed with a strong glowing outer rim
       vec3 finalColor = mix(uColor * 0.2, uColor, intensity);
