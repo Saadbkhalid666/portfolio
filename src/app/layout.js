@@ -13,6 +13,21 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+const ancizarSerif = Ancizar_Serif({
+  subsets: ["latin"],
+  variable: "--font-ancizar-serif",
+});
+
+const inter = Inter({
+  subsets: ["latin"],
+  variable: "--font-inter",
+});
+
+const instrumentSerif = Instrument_Serif({
+  weight:"400",
+  subsets: ["latin"],
+  variable: "--font-instrument-serif",
+});
 
 
 export const metadata = {
@@ -24,7 +39,7 @@ export default function RootLayout({ children }) {
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${geistSans.variable} ${geistMono.variable} ${instrumentSerif.variable} ${inter.variable} ${ancizarSerif.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">{children}</body>
     </html>

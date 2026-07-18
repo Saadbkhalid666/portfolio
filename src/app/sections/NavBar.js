@@ -1,3 +1,6 @@
+"use client"
+import { inter } from "../layout";
+
 export const NavBar = () => {
   return (
     <header className="fixed top-0 left-0 w-full z-50">
@@ -25,7 +28,7 @@ export const NavBar = () => {
         {/* Status */}
         <div className="flex items-center gap-2 text-zinc-300">
           <span className="h-3 w-3 rounded-full bg-green-500 animate-pulse"></span>
-          <span className="text-sm">Available for work</span>
+          <span className={`text-sm ${inter.variable}`}>Available for work</span>
         </div>
       </nav>
     </header>
