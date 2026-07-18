@@ -11,7 +11,6 @@ export default function Scene() {
         <ambientLight intensity={1.5} />
         <pointLight position={[10, 10, 10]} intensity={2} />
         
-        {/* The dynamic 3D wobbly sphere */}
         <AnimatedSphere />
       </Canvas>
     </div>
