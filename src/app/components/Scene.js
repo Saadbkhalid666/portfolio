@@ -5,7 +5,7 @@ import AnimatedSphere from "./AnimatedSphere";
 
 export default function Scene() {
   return (
-    <div className="fixed inset-0 w-full h-full ">
+    <div className="fixed top-4 w-full h-full ">
       <Canvas camera={{ position: [0, 0, 5], fov: 60 }}>
         {/* Soft atmospheric lighting */}
         <ambientLight intensity={1.5} />
