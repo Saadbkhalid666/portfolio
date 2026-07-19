@@ -3,7 +3,7 @@ export const NavBar = () => {
     <header className="fixed top-0 left-0 w-full z-50">
       <nav className="max-w-7xl mx-auto h-20 px-8 flex items-center justify-between">
         {/* Logo */}
-        <h1 className="text-2xl font-semibold tracking-wide text-[#f5f5f7] cursor-pointer font-ancizar">
+        <h1 className="text-xl font-semibold tracking-wide text-[#f5f5f7] cursor-pointer font-ancizar">
           Saad Bin Khalid
         </h1>
 

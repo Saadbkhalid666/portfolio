@@ -9,8 +9,8 @@ import * as THREE from "three";
 const HologramShaderMaterial = {
   uniforms: {
     uTime: { value: 0 },
-    uColor: { value: new THREE.Color("gray") }, // Teal color
-    uGlowPower: { value: 2.0 },                    // Edge glow intensity
+    uColor: { value: new THREE.Color("#6e6e73") }, // Teal color
+    uGlowPower: { value: 4.0 },                    // Edge glow intensity
   },
   
   // Vertex Shader: Displaces vertices outwards based on Simplex Noise + Time
@@ -97,7 +97,7 @@ const HologramShaderMaterial = {
       float intensity = pow(0.9 - max(dot(normal, viewDir), 0.0), uGlowPower);
       
       // Soft center color mixed with a strong glowing outer rim
-      vec3 finalColor = mix(uColor * 0.2, uColor, intensity);
+      vec3 finalColor = mix(uColor * 0.1, uColor, intensity);
       
       gl_FragColor = vec4(finalColor, intensity);
     }
@@ -118,9 +118,9 @@ export default function AnimatedSphere() {
 
     // 2. Add some slow, elegant base rotation and floating motion
     if (meshRef.current) {
-      meshRef.current.rotation.y = elapsed * 0.15;
-      meshRef.current.rotation.x = elapsed * 0.1;
-      meshRef.current.position.y = Math.sin(elapsed * 0.8) * 0.15;
+      meshRef.current.rotation.y = elapsed * 0.07;
+      meshRef.current.rotation.x = elapsed * 0.05;
+      meshRef.current.position.y = Math.sin(elapsed * 0.8) * 0.07;
     }
   });
 
