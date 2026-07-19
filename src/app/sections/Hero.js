@@ -10,9 +10,9 @@ export const Hero = () => {
 
       <div className="relative z-10 h-full max-w-7xl mx-auto px-8 grid grid-cols-3 items-center">
         <div className="flex flex-col justify-center">
-          <p className="text-purple-400 text-lg mb-2 ">Hello I&apos;m</p>
+          <p className="text-purple-400 text-lg mb-2 font-inter ">Hello I&apos;m</p>
 
-          <h1 className="text-6xl font-bold text-[#f5f5f7] font-ancizar ">
+          <h1 className="text-6xl font-semibold text-[#f5f5f7] font-ancizar ">
             Saad
             <br />
             Bin Khalid
