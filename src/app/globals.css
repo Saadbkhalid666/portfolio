@@ -6,6 +6,7 @@
   --font-mono: var(--font-geist-mono);
   --font-ancizar: var(--font-ancizar-serif);
   --font-instrument: var(--font-instrument-serif);
+  --font-lily: var(--font-lily-script-one)
 }
 
 body{

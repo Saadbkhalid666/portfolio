@@ -1,4 +1,4 @@
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist, Geist_Mono, Lily_Script_One } from "next/font/google";
 import "./globals.css";
 import { Ancizar_Serif, Inter, Instrument_Serif } from "next/font/google";
 
@@ -28,6 +28,11 @@ const instrumentSerif = Instrument_Serif({
   variable: "--font-instrument-serif",
 });
 
+const lilyScriptOne = Lily_Script_One({
+  subsets:["latin"],
+  variable:"--font-lily-script-one",
+  
+})
 
 export const metadata = {
   title: "Create Next App",
