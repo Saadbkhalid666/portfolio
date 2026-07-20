@@ -25,7 +25,6 @@ export const FeaturedProjects = () => {
       description:
         "NexChat is a high-performance real-time messaging platform with secure authentication, Socket.IO communication, an admin dashboard, and a modern UI built for speed and scalability.",
       image: projectOneLogo,
-      liveUrl: "https://nexchat-live.vercel.app",
       githubUrl: "https://github.com/Saadbkhalid666/nexchat",
       bgGlow: "from-purple-900/20 via-indigo-950/10 to-transparent",
     },
@@ -56,6 +55,7 @@ export const FeaturedProjects = () => {
       description:
         "Wholesale e-commerce platform built with Next.js, Redux Toolkit, secure checkout, and a responsive admin-friendly architecture.",
       image: projectTwoLogo,
+      liveUrl:"https://kstraders.vercel.app",
       githubUrl: "https://github.com",
       bgGlow: "from-amber-900/20 via-zinc-950/10 to-transparent",
     },
@@ -66,6 +66,7 @@ export const FeaturedProjects = () => {
       description:
         "Enterprise management software for handling workflows, inventory, client operations, and reporting with a scalable backend.",
       image: projectFiveLogo,
+      liveUrl:"https://mrsenterprise.vercel.app",
       githubUrl: "https://github.com/Saadbkhalid666/m.r.s-enterprise",
       bgGlow: "from-rose-900/20 via-slate-950/10 to-transparent",
     },
