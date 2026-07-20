@@ -12,7 +12,7 @@ export const Hero = () => {
         <div className="flex flex-col justify-center mt-10 sm:mt-0">
           <p className="text-purple-400 text-lg mb-2 font-inter ">Hello I&apos;m</p>
 
-          <h1 className="text-5xl font-semibold text-[#f5f5f7] font-ancizar ">
+          <h1 className=" text-5xl md:text-6xl font-semibold text-[#f5f5f7] font-ancizar ">
             Saad
             <br />
             Bin Khalid
@@ -24,11 +24,11 @@ export const Hero = () => {
         <div className="flex justify-end mt-30">
           <h2 className=" leading-none">
 <p className="text-[#6e6e73] font-instrument ">01 - Role</p>
-            <span className="font-ancizar block text-5xl font-semibold bg-linear-to-b from-white to-black bg-clip-text text-transparent">
+            <span className="font-ancizar block text-5xl  font-semibold md:text-6xl bg-linear-to-b from-white to-black bg-clip-text text-transparent">
               Full-Stack
             </span>
 
-            <span className="text-right font-ancizar block text-purple-300 text-5xl font-semibold -mt-4 mr-2">
+            <span className="text-right font-ancizar block md:text-6xl text-purple-300 text-5xl font-semibold -mt-4 ">
               Engineer
             </span>
           </h2>
