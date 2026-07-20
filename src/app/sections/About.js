@@ -2,7 +2,6 @@ import Image from "next/image";
 import myimg from "../assets/myimg.jpg";
 
 export const About = () => {
-  // Schema.org JSON-LD for search engines
   const schemaData = {
     "@context": "https://schema.org",
     "@type": "Person",
@@ -27,7 +26,6 @@ export const About = () => {
       aria-labelledby="about-heading" 
       className="relative mt-20 lg:mt-32 px-6 py-12 overflow-hidden   text-[#f5f5f7]"
     >
-      {/* Schema.org Structured Data */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaData) }}
@@ -37,7 +35,6 @@ export const About = () => {
             <p className="font-instrument text-[#6e6e73] text-lg ">02 - About</p>
         <div className="flex flex-col-reverse items-center gap-12 lg:flex-row lg:justify-between lg:gap-16">
           
-          {/* Main Content Area */}
           <article className="max-w-2xl text-center lg:text-left">
             <h2 
               id="about-heading"
@@ -80,7 +77,6 @@ export const About = () => {
             </div>
           </article>
 
-          {/* Profile Image - Monochrome Styling */}
           <div className="relative flex justify-center lg:justify-end group">
             <div className="relative rounded-2xl overflow-hidden border border-zinc-800 bg-zinc-900/60 p-2 transition-colors duration-300 group-hover:border-zinc-600">
               <Image
