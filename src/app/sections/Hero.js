@@ -30,7 +30,7 @@ export const Hero = () => {
 
       <div className="relative z-10 h-full max-w-7xl mx-auto px-8 grid md:grid-cols-3 items-center">
         <header className="flex flex-col justify-center mt-10 sm:mt-0">
-          <p className="text-purple-400 text-lg mb-2 font-inter">
+          <p className="text-zinc-400 text-lg mb-2 font-inter">
             Hello I&apos;m
           </p>
 
@@ -53,7 +53,7 @@ export const Hero = () => {
               Full-Stack
             </p>
 
-            <p className="text-right font-ancizar block md:text-6xl text-purple-300 text-5xl font-semibold -mt-4">
+            <p className="text-right font-ancizar block md:text-6xl text-white text-5xl font-semibold -mt-4">
               Engineer
             </p>
           </div>
