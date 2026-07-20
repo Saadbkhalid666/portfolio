@@ -1,5 +1,5 @@
-import { Geist, Geist_Mono, Lily_Script_One } from "next/font/google";
 import "./globals.css";
+import { Geist, Geist_Mono, Lily_Script_One } from "next/font/google";
 import { Ancizar_Serif, Inter, Instrument_Serif } from "next/font/google";
 
 const geistSans = Geist({
@@ -29,8 +29,10 @@ const instrumentSerif = Instrument_Serif({
 });
 
 const lilyScriptOne = Lily_Script_One({
+  weight:"400",
   subsets:["latin"],
-  variable:"--font-lily-script-one",
+  variable:"--font-lily-script-one"
+
   
 })
 

@@ -1,3 +1,6 @@
+import Image from "next/image"
+import myimg from "../assets/myimg.jpg"
+
 export const About = () => {
     return <div className="container">
         <div className="content-container">
@@ -6,6 +9,8 @@ export const About = () => {
             Good software isn't just clean code - it solves real business problems, feels effortless to use, and holds up as it scales, that's the standard i Build to: performance and thoughtful design in every project. <br />
             That's the work i do - and the value i bring. </p>
         </div>
-        <div className="image-container"></div>
+        <div className="image-container">
+            <Image   className="w-60" src={myimg} alt="developer image" />
+        </div>
     </div>
 }
