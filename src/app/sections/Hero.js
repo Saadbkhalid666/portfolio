@@ -1,7 +1,6 @@
 import Scene from "../components/Scene";
 
 export const Hero = () => {
-  // Structured Data (JSON-LD) for Search Engine Rich Snippets
   const personSchema = {
     "@context": "https://schema.org",
     "@type": "Person",
