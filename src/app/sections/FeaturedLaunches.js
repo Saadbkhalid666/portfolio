@@ -78,14 +78,12 @@ export const FeaturedProjects = () => {
     if (!section || !track) return;
 
     const ctx = gsap.context(() => {
-      // MatchMedia for Desktop Pinned Scroll vs Mobile Vertical Stack
       const mm = gsap.matchMedia();
 
       mm.add("(min-width: 1024px)", () => {
         const totalProjects = projects.length;
         const totalScrollWidth = track.scrollWidth - window.innerWidth;
 
-        // Main Horizontal Track Scroll Timeline
         const mainTimeline = gsap.timeline({
           scrollTrigger: {
             trigger: section,
@@ -96,7 +94,6 @@ export const FeaturedProjects = () => {
             anticipatePin: 1,
             invalidateOnRefresh: true,
             onUpdate: (self) => {
-              // Smooth GPU progress bar animation
               if (progressBarRef.current) {
                 gsap.set(progressBarRef.current, {
                   scaleX: self.progress,
@@ -104,7 +101,6 @@ export const FeaturedProjects = () => {
                 });
               }
 
-              // Update counter text without triggering React state re-renders
               if (counterRef.current) {
                 const currentIdx = Math.min(
                   Math.floor(self.progress * totalProjects) + 1,
@@ -116,13 +112,11 @@ export const FeaturedProjects = () => {
           },
         });
 
-        // Translate Track
         mainTimeline.to(track, {
           x: -totalScrollWidth,
           ease: "none",
         });
 
-        // Per-project elements animation during horizontal motion
         const cards = gsap.utils.toArray(".project-item");
 
         cards.forEach((card, i) => {
@@ -133,7 +127,6 @@ export const FeaturedProjects = () => {
           const desc = card.querySelector(".project-desc");
           const buttons = card.querySelectorAll(".project-btn");
 
-          // Image Entrance Scale + Fade
           gsap.fromTo(
             imageBox,
             { scale: 0.92, opacity: 0.3 },
@@ -151,7 +144,6 @@ export const FeaturedProjects = () => {
             }
           );
 
-          // Image Internal Parallax Effect
           gsap.fromTo(
             imageInner,
             { x: -60, scale: 1.05 },
@@ -169,7 +161,6 @@ export const FeaturedProjects = () => {
             }
           );
 
-          // Content Text Staggered Reveal
           const contentTl = gsap.timeline({
             scrollTrigger: {
               trigger: card,
@@ -206,7 +197,6 @@ export const FeaturedProjects = () => {
         });
       });
 
-      // Mobile Vertical Reveal
       mm.add("(max-width: 1023px)", () => {
         const cards = gsap.utils.toArray(".project-item");
         cards.forEach((card) => {
@@ -232,11 +222,13 @@ export const FeaturedProjects = () => {
   }, [projects.length]);
 
   return (
-    <section ref={sectionRef} className="relative bg-[#050505] text-[#f5f5f7] overflow-hidden">
-      {/* Sticky Container for Desktop / Standard block for Mobile */}
+    <section ref={sectionRef} className="relative bg-[#050505] text-[#f5f5f7] overflow-hidden mt-20">
       <div className="relative lg:h-screen lg:w-full lg:overflow-hidden flex flex-col justify-between">
-        
-        {/* Horizontal Track Wrapper */}
+            <p className="text-center font-instrument text-zinc-400 uppercase tracking-[0.3em] text-sm">
+               03 - Production Logs
+            </p>
+
+            <h2 className="mt-3 text-center text-5xl font-bold">Selected Projects</h2>
         <div
           ref={trackRef}
           className="flex flex-col lg:flex-row h-full w-full lg:will-change-transform"
@@ -246,22 +238,17 @@ export const FeaturedProjects = () => {
               key={project.id}
               className="project-item relative shrink-0 w-full lg:w-screen h-auto lg:h-screen flex items-center justify-center px-6 sm:px-12 lg:px-20 py-16 lg:py-0 border-b border-zinc-900/50 lg:border-b-0"
             >
-              {/* Dynamic Subtle Ambient Background Glow */}
               <div
                 className={`pointer-events-none absolute inset-0 bg-linear-to-br ${project.bgGlow} opacity-60 blur-[130px]`}
               />
 
-              {/* Grid Layout Container */}
               <div className="relative z-10 mx-auto grid w-full max-w-7xl grid-cols-1 gap-10 lg:gap-16 lg:grid-cols-12 items-center">
                 
-                {/* LEFT - Dominant Image Container (55% / 7 cols) */}
                 <div className="lg:col-span-7 flex justify-center w-full">
                   <div className="project-image-box group relative w-full max-w-2xl overflow-hidden rounded-3xl border border-white/10 bg-linear-to-b from-white/10 via-zinc-900/80 to-black p-4 sm:p-8 backdrop-blur-xl shadow-[0_30px_100px_rgba(0,0,0,0.8)] transition-all duration-500 hover:border-white/20">
                     
-                    {/* Radial Glow Hover Effect */}
                     <div className="pointer-events-none absolute -inset-px rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-radial from-white/15 to-transparent blur-md" />
 
-                    {/* Image Box */}
                     <div className="project-image-inner relative w-full aspect-16/10 overflow-hidden rounded-2xl bg-black/50">
                       <Image
                         src={project.image}
@@ -276,7 +263,6 @@ export const FeaturedProjects = () => {
                   </div>
                 </div>
 
-                {/* RIGHT - Content Area (45% / 5 cols) */}
                 <div className="lg:col-span-5 flex flex-col justify-center">
                   <span className="project-category font-mono text-xs sm:text-sm uppercase tracking-[0.3em] text-zinc-400">
                     {project.category}
@@ -290,7 +276,6 @@ export const FeaturedProjects = () => {
                     {project.description}
                   </p>
 
-                  {/* Buttons */}
                   <div className="mt-8 sm:mt-10 flex flex-wrap items-center gap-4">
                     {project.liveUrl && (
                       <MagneticButton
@@ -319,9 +304,7 @@ export const FeaturedProjects = () => {
           ))}
         </div>
 
-        {/* Desktop Fixed Bottom Progress Bar & Counter */}
         <div className="hidden lg:flex pointer-events-none absolute bottom-8 left-1/2 -translate-x-1/2 z-20 w-full max-w-7xl px-20 items-center justify-between">
-          {/* Numerical Counter */}
           <div className="flex items-center gap-2 font-mono text-sm tracking-widest text-zinc-400">
             <span ref={counterRef} className="text-white font-bold text-lg">
               01
@@ -330,7 +313,6 @@ export const FeaturedProjects = () => {
             <span>{String(projects.length).padStart(2, "0")}</span>
           </div>
 
-          {/* Animated Horizontal Track Line */}
           <div className="relative h-0.5 w-64 bg-zinc-800 overflow-hidden rounded-full">
             <div
               ref={progressBarRef}
