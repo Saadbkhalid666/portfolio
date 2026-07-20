@@ -1,32 +1,21 @@
 "use client";
 
-import { useRef } from "react";
 import Image from "next/image";
+import { useEffect, useRef } from "react";
 
-import { Swiper, SwiperSlide } from "swiper/react";
-import {
-  Navigation,
-  Pagination,
-  Keyboard,
-  Mousewheel,
-  Autoplay,
-} from "swiper/modules";
-
-import "swiper/css";
-import "swiper/css/navigation";
-import "swiper/css/pagination";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 import projectOneLogo from "../assets/project1.png";
 import projectTwoLogo from "../assets/project2.png";
 import projectThreeLogo from "../assets/project3.png";
 import projectFourLogo from "../assets/project4.png";
 import projectFiveLogo from "../assets/project5.png";
-import projectSixLogo from "../assets/project6.png";
 
+gsap.registerPlugin(ScrollTrigger);
 export const FeaturedProjects = () => {
-  const prevRef = useRef(null);
-  const nextRef = useRef(null);
-
+const sectionRef = useRef(null);
+const trackRef = useRef(null);
   const projects = [
     {
       id: "nexchat",
@@ -76,136 +65,188 @@ export const FeaturedProjects = () => {
     },
   ];
 
-  return (
-    <section className="bg-[#050505] py-32 text-white">
-      <div className="mx-auto max-w-7xl px-6">
-        {/* Header */}
-        <div className="mb-14 flex items-center justify-between">
-          <div>
-            <p className="font-instrument text-zinc-400 uppercase tracking-[0.3em] text-sm">
-               03 - Production Logs
-            </p>
+useEffect(() => {
+  const section = sectionRef.current;
+  const track = trackRef.current;
 
-            <h2 className="mt-3 text-5xl font-bold">Selected Projects</h2>
+  if (!section || !track) return;
+
+  const ctx = gsap.context(() => {
+
+    const totalScroll = track.scrollWidth - window.innerWidth;
+
+    gsap.to(track, {
+      x: -totalScroll,
+      ease: "none",
+
+      scrollTrigger: {
+        trigger: section,
+        start: "top top",
+        end: () => `+=${totalScroll}`,
+        pin: true,
+        scrub: 1.2,
+        anticipatePin: 1,
+        invalidateOnRefresh: true,
+      },
+    });
+
+    gsap.from(".project-card", {
+      opacity: 0,
+      y: 80,
+      duration: 1,
+      stagger: 0.2,
+      ease: "power3.out",
+      scrollTrigger: {
+        trigger: section,
+        start: "top center",
+      },
+    });
+
+  }, section);
+
+  return () => ctx.revert();
+
+}, []);
+
+
+
+ return (
+<section
+    ref={sectionRef}
+    className="relative h-[500vh] bg-[#050505]"
+>
+
+<div className="sticky top-0 h-screen overflow-hidden">
+
+<div
+    ref={trackRef}
+    className="flex h-full"
+>
+    {projects.map((project, index) => (
+  <section
+    key={project.id}
+    className="flex h-screen w-screen shrink-0 items-center justify-center px-8 lg:px-20"
+  >
+    <div className="project-card mx-auto grid w-full max-w-7xl grid-cols-1 items-center gap-16 lg:grid-cols-2">
+
+      {/* LEFT - Image */}
+      <div className="flex justify-center">
+        <div className="group relative">
+
+          {/* Glow */}
+          <div className="absolute inset-0 rounded-[40px] bg-purple-500/20 blur-3xl transition-all duration-700 group-hover:scale-110" />
+
+          {/* Card */}
+          <div className="relative overflow-hidden rounded-4xl border border-zinc-800 bg-linear-to-br from-zinc-900 to-black p-10 shadow-[0_30px_100px_rgba(0,0,0,.5)]">
+
+            <Image
+              src={project.image}
+              alt={project.title}
+              priority={index === 0}
+              quality={100}
+              className="h-auto w-full max-w-xl object-contain transition-all duration-700 group-hover:scale-110 group-hover:-rotate-2"
+            />
+
           </div>
 
-          <div className="hidden gap-3 md:flex">
-            <button
-              ref={prevRef}
-              className="grid h-12 w-12 place-items-center rounded-full border border-zinc-800 transition hover:border-white"
-            >
-              ←
-            </button>
+        </div>
+      </div>
 
-            <button
-              ref={nextRef}
-              className="grid h-12 w-12 place-items-center rounded-full border border-zinc-800 transition hover:border-white"
+      {/* RIGHT */}
+      <div>
+
+        <span className="font-mono text-sm uppercase tracking-[0.35em] text-purple-400">
+          {project.category}
+        </span>
+
+        <h2 className="mt-6 font-ancizar text-5xl font-bold leading-tight text-white lg:text-7xl">
+          {project.title}
+        </h2>
+
+        <p className="mt-8 max-w-xl text-lg leading-9 text-zinc-400">
+          {project.description}
+        </p>
+
+        <div className="mt-10 flex flex-wrap gap-5">
+
+          {project.liveUrl && (
+            <a
+              href={project.liveUrl}
+              target="_blank"
+              rel="noreferrer"
+              className="rounded-full bg-white px-8 py-4 font-semibold text-black transition-all duration-300 hover:-translate-y-1 hover:scale-105"
             >
-              →
-            </button>
-          </div>
+              Live Demo →
+            </a>
+          )}
+
+          <a
+            href={project.githubUrl}
+            target="_blank"
+            rel="noreferrer"
+            className="rounded-full border border-zinc-700 px-8 py-4 text-white transition-all duration-300 hover:border-purple-500 hover:bg-zinc-900"
+          >
+            GitHub
+          </a>
+
         </div>
 
-        <Swiper
-          modules={[Navigation, Pagination, Keyboard, Mousewheel, Autoplay]}
-          slidesPerView={1}
-          speed={700}
-          autoplay={{
-            delay: 5000,
-            disableOnInteraction: false,
-          }}
-          keyboard={{
-            enabled: true,
-          }}
-          mousewheel={{
-            forceToAxis: true,
-          }}
-          pagination={{
-            clickable: true,
-          }}
-          onBeforeInit={(swiper) => {
-            setTimeout(() => {
-              swiper.params.navigation.prevEl = prevRef.current;
-              swiper.params.navigation.nextEl = nextRef.current;
+        {/* Counter */}
 
-              swiper.navigation.destroy();
-              swiper.navigation.init();
-              swiper.navigation.update();
-            });
-          }}
-          className="featuredSwiper"
-        >
-          {projects.map((project, index) => (
-            <SwiperSlide key={project.id}>
-              <div className="grid min-h-150 grid-cols-1 items-center gap-12 lg:grid-cols-2 mb-6 ">
-                {/* Image */}
-                <div className="flex justify-center ">
-      <div className="group relative overflow-hidden rounded-3xl border border-zinc-800 bg-linear-to-br from-zinc-900 to-black p-8 shadow-2xl">
-                    <Image
-                      src={project.image}
-                      alt={project.title}
-                      priority={index === 0}
-                      quality={100}
-                     className="h-auto w-full max-w-lg object-contain transition-all duration-700 group-hover:scale-110 group-hover:rotate-1"
-                    />
-                  </div>
-                </div>
+        <div className="mt-20 flex items-center gap-6">
 
-                {/* Content */}
-                <div>
-                  <p className="mb-3 font-mono text-sm uppercase tracking-[0.3em] text-zinc-400">
-                    {project.category}
-                  </p>
+          <span className="text-6xl font-bold text-zinc-700">
+            {String(index + 1).padStart(2, "0")}
+          </span>
 
-                  <h3 className="font-ancizar text-4xl font-semibold leading-tight text-white lg:text-6xl">
-                    {project.title}
-                  </h3>
+          <div className="h-px flex-1 bg-zinc-800"></div>
 
-                  <p className="mt-8 max-w-xl text-lg leading-8 text-zinc-400">
-                    {project.description}
-                  </p>
+          <span className="text-zinc-500">
+            {String(projects.length).padStart(2, "0")}
+          </span>
 
-                  {/* Buttons */}
-                  <div className="mt-10 flex flex-wrap gap-4">
-                    {project.liveUrl && (
-                      <a
-                        href={project.liveUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="rounded-xl bg-white px-7 py-3 font-semibold text-black transition-all duration-300 hover:-translate-y-1 hover:bg-zinc-200"
-                      >
-                        Live Demo ↗
-                      </a>
-                    )}
+        </div>
 
-                    <a
-                      href={project.githubUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="rounded-xl border border-zinc-700 px-7 py-3 font-semibold text-white transition-all duration-300 hover:-translate-y-1 hover:border-purple-500 hover:bg-zinc-900"
-                    >
-                      Source Code
-                    </a>
-                  </div>
-
-                  {/* Slide Counter */}
-                  <div className="mt-12 flex items-center gap-4">
-                    <span className="text-4xl font-bold text-zinc-700">
-                      {String(index + 1).padStart(2, "0")}
-                    </span>
-
-                    <div className="h-px flex-1 bg-zinc-800"></div>
-
-                    <span className="text-zinc-500">
-                      {String(projects.length).padStart(2, "0")}
-                    </span>
-                  </div>
-                </div>
-              </div>
-            </SwiperSlide>
-          ))}
-        </Swiper>
       </div>
-    </section>
-  );
+
+    </div>
+  </section>
+))}
+      </div>
+    </div>
+
+    {/* Progress Indicator */}
+    <div className="absolute bottom-10 left-1/2 flex -translate-x-1/2 items-center gap-3">
+
+      {projects.map((_, i) => (
+        <div
+          key={i}
+          className="h-1 w-12 overflow-hidden rounded-full bg-zinc-800"
+        >
+          <div
+            className={`h-full transition-all duration-500 ${
+              i <= index
+                ? "w-full bg-purple-500"
+                : "w-0"
+            }`}
+          />
+        </div>
+      ))}
+
+    </div>
+
+    {/* Background Decoration */}
+    <div className="pointer-events-none absolute -left-40 top-1/2 h-96 w-96 -translate-y-1/2 rounded-full bg-purple-600/10 blur-[120px]" />
+
+    <div className="pointer-events-none absolute -right-40 top-1/2 h-96 w-96 -translate-y-1/2 rounded-full bg-blue-500/10 blur-[120px]" />
+
+  </section>
+))}
+
+</div>
+
+</div>
+
+</section>
+);
 };
