@@ -2,9 +2,8 @@
 
 import Image from "next/image";
 import { useEffect, useRef } from "react";
-
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { gsap, ScrollTrigger } from "../lib/gsap";
+import { MagneticButton } from "../components/MagneticButton";
 
 import projectOneLogo from "../assets/project1.png";
 import projectTwoLogo from "../assets/project2.png";
@@ -12,10 +11,12 @@ import projectThreeLogo from "../assets/project3.png";
 import projectFourLogo from "../assets/project4.png";
 import projectFiveLogo from "../assets/project5.png";
 
-gsap.registerPlugin(ScrollTrigger);
 export const FeaturedProjects = () => {
-const sectionRef = useRef(null);
-const trackRef = useRef(null);
+  const sectionRef = useRef(null);
+  const trackRef = useRef(null);
+  const progressBarRef = useRef(null);
+  const counterRef = useRef(null);
+
   const projects = [
     {
       id: "nexchat",
@@ -26,6 +27,7 @@ const trackRef = useRef(null);
       image: projectOneLogo,
       liveUrl: "https://nexchat-live.vercel.app",
       githubUrl: "https://github.com/Saadbkhalid666/nexchat",
+      bgGlow: "from-purple-900/20 via-indigo-950/10 to-transparent",
     },
     {
       id: "autolog-ai",
@@ -35,6 +37,7 @@ const trackRef = useRef(null);
         "An AI-powered vehicle management platform featuring OCR receipt scanning, chatbot assistance, expense tracking, and automated service reminders.",
       image: projectThreeLogo,
       githubUrl: "https://github.com/Saadbkhalid666/autolog.ai",
+      bgGlow: "from-blue-900/20 via-cyan-950/10 to-transparent",
     },
     {
       id: "neurovisionx",
@@ -44,6 +47,7 @@ const trackRef = useRef(null);
         "Browser-based computer vision application performing real-time face and hand detection using modern AI models with React and Tailwind CSS.",
       image: projectFourLogo,
       githubUrl: "https://github.com/Saadbkhalid666/neurovisionx",
+      bgGlow: "from-emerald-900/20 via-teal-950/10 to-transparent",
     },
     {
       id: "ks-traders",
@@ -53,6 +57,7 @@ const trackRef = useRef(null);
         "Wholesale e-commerce platform built with Next.js, Redux Toolkit, secure checkout, and a responsive admin-friendly architecture.",
       image: projectTwoLogo,
       githubUrl: "https://github.com",
+      bgGlow: "from-amber-900/20 via-zinc-950/10 to-transparent",
     },
     {
       id: "mrs-enterprise",
@@ -60,193 +65,280 @@ const trackRef = useRef(null);
       category: "05 • Business Management",
       description:
         "Enterprise management software for handling workflows, inventory, client operations, and reporting with a scalable backend.",
-      image: projectSixLogo,
+      image: projectFiveLogo,
       githubUrl: "https://github.com/Saadbkhalid666/m.r.s-enterprise",
+      bgGlow: "from-rose-900/20 via-slate-950/10 to-transparent",
     },
   ];
 
-useEffect(() => {
-  const section = sectionRef.current;
-  const track = trackRef.current;
+  useEffect(() => {
+    const section = sectionRef.current;
+    const track = trackRef.current;
+    if (!section || !track) return;
 
-  if (!section || !track) return;
+    const ctx = gsap.context(() => {
+      // MatchMedia for Desktop Pinned Scroll vs Mobile Vertical Stack
+      const mm = gsap.matchMedia();
 
-  const ctx = gsap.context(() => {
+      mm.add("(min-width: 1024px)", () => {
+        const totalProjects = projects.length;
+        const totalScrollWidth = track.scrollWidth - window.innerWidth;
 
-    const totalScroll = track.scrollWidth - window.innerWidth;
+        // Main Horizontal Track Scroll Timeline
+        const mainTimeline = gsap.timeline({
+          scrollTrigger: {
+            trigger: section,
+            start: "top top",
+            end: () => `+=${totalScrollWidth}`,
+            pin: true,
+            scrub: 1,
+            anticipatePin: 1,
+            invalidateOnRefresh: true,
+            onUpdate: (self) => {
+              // Smooth GPU progress bar animation
+              if (progressBarRef.current) {
+                gsap.set(progressBarRef.current, {
+                  scaleX: self.progress,
+                  transformOrigin: "left center",
+                });
+              }
 
-    gsap.to(track, {
-      x: -totalScroll,
-      ease: "none",
+              // Update counter text without triggering React state re-renders
+              if (counterRef.current) {
+                const currentIdx = Math.min(
+                  Math.floor(self.progress * totalProjects) + 1,
+                  totalProjects
+                );
+                counterRef.current.innerText = String(currentIdx).padStart(2, "0");
+              }
+            },
+          },
+        });
 
-      scrollTrigger: {
-        trigger: section,
-        start: "top top",
-        end: () => `+=${totalScroll}`,
-        pin: true,
-        scrub: 1.2,
-        anticipatePin: 1,
-        invalidateOnRefresh: true,
-      },
-    });
+        // Translate Track
+        mainTimeline.to(track, {
+          x: -totalScrollWidth,
+          ease: "none",
+        });
 
-    gsap.from(".project-card", {
-      opacity: 0,
-      y: 80,
-      duration: 1,
-      stagger: 0.2,
-      ease: "power3.out",
-      scrollTrigger: {
-        trigger: section,
-        start: "top center",
-      },
-    });
+        // Per-project elements animation during horizontal motion
+        const cards = gsap.utils.toArray(".project-item");
 
-  }, section);
+        cards.forEach((card, i) => {
+          const imageBox = card.querySelector(".project-image-box");
+          const imageInner = card.querySelector(".project-image-inner");
+          const category = card.querySelector(".project-category");
+          const title = card.querySelector(".project-title");
+          const desc = card.querySelector(".project-desc");
+          const buttons = card.querySelectorAll(".project-btn");
 
-  return () => ctx.revert();
+          // Image Entrance Scale + Fade
+          gsap.fromTo(
+            imageBox,
+            { scale: 0.92, opacity: 0.3 },
+            {
+              scale: 1,
+              opacity: 1,
+              ease: "power2.out",
+              scrollTrigger: {
+                trigger: card,
+                containerAnimation: mainTimeline,
+                start: "left 85%",
+                end: "left 35%",
+                scrub: true,
+              },
+            }
+          );
 
-}, []);
+          // Image Internal Parallax Effect
+          gsap.fromTo(
+            imageInner,
+            { x: -60, scale: 1.05 },
+            {
+              x: 60,
+              scale: 1,
+              ease: "none",
+              scrollTrigger: {
+                trigger: card,
+                containerAnimation: mainTimeline,
+                start: "left right",
+                end: "right left",
+                scrub: true,
+              },
+            }
+          );
 
+          // Content Text Staggered Reveal
+          const contentTl = gsap.timeline({
+            scrollTrigger: {
+              trigger: card,
+              containerAnimation: mainTimeline,
+              start: "left 70%",
+              toggleActions: "play reverse play reverse",
+            },
+          });
 
+          contentTl
+            .fromTo(
+              category,
+              { y: 25, opacity: 0 },
+              { y: 0, opacity: 1, duration: 0.6, ease: "power3.out" }
+            )
+            .fromTo(
+              title,
+              { y: 35, opacity: 0 },
+              { y: 0, opacity: 1, duration: 0.7, ease: "power3.out" },
+              "-=0.4"
+            )
+            .fromTo(
+              desc,
+              { y: 30, opacity: 0 },
+              { y: 0, opacity: 1, duration: 0.6, ease: "power3.out" },
+              "-=0.5"
+            )
+            .fromTo(
+              buttons,
+              { y: 20, opacity: 0 },
+              { y: 0, opacity: 1, duration: 0.5, stagger: 0.1, ease: "power3.out" },
+              "-=0.4"
+            );
+        });
+      });
 
- return (
-<section
-    ref={sectionRef}
-    className="relative h-[500vh] bg-[#050505]"
->
+      // Mobile Vertical Reveal
+      mm.add("(max-width: 1023px)", () => {
+        const cards = gsap.utils.toArray(".project-item");
+        cards.forEach((card) => {
+          gsap.fromTo(
+            card,
+            { opacity: 0, y: 50 },
+            {
+              opacity: 1,
+              y: 0,
+              duration: 0.8,
+              ease: "power3.out",
+              scrollTrigger: {
+                trigger: card,
+                start: "top 80%",
+              },
+            }
+          );
+        });
+      });
+    }, section);
 
-<div className="sticky top-0 h-screen overflow-hidden">
+    return () => ctx.revert();
+  }, [projects.length]);
 
-<div
-    ref={trackRef}
-    className="flex h-full"
->
-    {projects.map((project, index) => (
-  <section
-    key={project.id}
-    className="flex h-screen w-screen shrink-0 items-center justify-center px-8 lg:px-20"
-  >
-    <div className="project-card mx-auto grid w-full max-w-7xl grid-cols-1 items-center gap-16 lg:grid-cols-2">
+  return (
+    <section ref={sectionRef} className="relative bg-[#050505] text-[#f5f5f7] overflow-hidden">
+      {/* Sticky Container for Desktop / Standard block for Mobile */}
+      <div className="relative lg:h-screen lg:w-full lg:overflow-hidden flex flex-col justify-between">
+        
+        {/* Horizontal Track Wrapper */}
+        <div
+          ref={trackRef}
+          className="flex flex-col lg:flex-row h-full w-full lg:will-change-transform"
+        >
+          {projects.map((project, index) => (
+            <div
+              key={project.id}
+              className="project-item relative shrink-0 w-full lg:w-screen h-auto lg:h-screen flex items-center justify-center px-6 sm:px-12 lg:px-20 py-16 lg:py-0 border-b border-zinc-900/50 lg:border-b-0"
+            >
+              {/* Dynamic Subtle Ambient Background Glow */}
+              <div
+                className={`pointer-events-none absolute inset-0 bg-linear-to-br ${project.bgGlow} opacity-60 blur-[130px]`}
+              />
 
-      {/* LEFT - Image */}
-      <div className="flex justify-center">
-        <div className="group relative">
+              {/* Grid Layout Container */}
+              <div className="relative z-10 mx-auto grid w-full max-w-7xl grid-cols-1 gap-10 lg:gap-16 lg:grid-cols-12 items-center">
+                
+                {/* LEFT - Dominant Image Container (55% / 7 cols) */}
+                <div className="lg:col-span-7 flex justify-center w-full">
+                  <div className="project-image-box group relative w-full max-w-2xl overflow-hidden rounded-3xl border border-white/10 bg-linear-to-b from-white/10 via-zinc-900/80 to-black p-4 sm:p-8 backdrop-blur-xl shadow-[0_30px_100px_rgba(0,0,0,0.8)] transition-all duration-500 hover:border-white/20">
+                    
+                    {/* Radial Glow Hover Effect */}
+                    <div className="pointer-events-none absolute -inset-px rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-radial from-white/15 to-transparent blur-md" />
 
-          {/* Glow */}
-          <div className="absolute inset-0 rounded-[40px] bg-purple-500/20 blur-3xl transition-all duration-700 group-hover:scale-110" />
+                    {/* Image Box */}
+                    <div className="project-image-inner relative w-full aspect-16/10 overflow-hidden rounded-2xl bg-black/50">
+                      <Image
+                        src={project.image}
+                        alt={project.title}
+                        priority={index === 0}
+                        quality={95}
+                        fill
+                        sizes="(max-width: 1024px) 100vw, 55vw"
+                        className="object-contain p-4 sm:p-6 transition-transform duration-700 ease-out group-hover:scale-105"
+                      />
+                    </div>
+                  </div>
+                </div>
 
-          {/* Card */}
-          <div className="relative overflow-hidden rounded-4xl border border-zinc-800 bg-linear-to-br from-zinc-900 to-black p-10 shadow-[0_30px_100px_rgba(0,0,0,.5)]">
+                {/* RIGHT - Content Area (45% / 5 cols) */}
+                <div className="lg:col-span-5 flex flex-col justify-center">
+                  <span className="project-category font-mono text-xs sm:text-sm uppercase tracking-[0.3em] text-zinc-400">
+                    {project.category}
+                  </span>
 
-            <Image
-              src={project.image}
-              alt={project.title}
-              priority={index === 0}
-              quality={100}
-              className="h-auto w-full max-w-xl object-contain transition-all duration-700 group-hover:scale-110 group-hover:-rotate-2"
-            />
+                  <h2 className="project-title mt-4 font-ancizar text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-white leading-[1.1]">
+                    {project.title}
+                  </h2>
 
+                  <p className="project-desc mt-6 max-w-xl text-base sm:text-lg leading-relaxed text-zinc-400 font-normal">
+                    {project.description}
+                  </p>
+
+                  {/* Buttons */}
+                  <div className="mt-8 sm:mt-10 flex flex-wrap items-center gap-4">
+                    {project.liveUrl && (
+                      <MagneticButton
+                        href={project.liveUrl}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="project-btn rounded-full bg-white px-7 py-3.5 text-sm font-semibold text-black shadow-[0_0_20px_rgba(255,255,255,0.2)] transition-all duration-300 hover:shadow-[0_0_35px_rgba(255,255,255,0.4)]"
+                      >
+                        Live Demo <span className="ml-2">↗</span>
+                      </MagneticButton>
+                    )}
+
+                    <MagneticButton
+                      href={project.githubUrl}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="project-btn rounded-full border border-zinc-700/80 bg-zinc-900/60 px-7 py-3.5 text-sm font-semibold text-white backdrop-blur-md transition-colors duration-300 hover:border-zinc-400 hover:bg-zinc-800"
+                    >
+                      GitHub
+                    </MagneticButton>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Desktop Fixed Bottom Progress Bar & Counter */}
+        <div className="hidden lg:flex pointer-events-none absolute bottom-8 left-1/2 -translate-x-1/2 z-20 w-full max-w-7xl px-20 items-center justify-between">
+          {/* Numerical Counter */}
+          <div className="flex items-center gap-2 font-mono text-sm tracking-widest text-zinc-400">
+            <span ref={counterRef} className="text-white font-bold text-lg">
+              01
+            </span>
+            <span>/</span>
+            <span>{String(projects.length).padStart(2, "0")}</span>
           </div>
 
-        </div>
-      </div>
-
-      {/* RIGHT */}
-      <div>
-
-        <span className="font-mono text-sm uppercase tracking-[0.35em] text-purple-400">
-          {project.category}
-        </span>
-
-        <h2 className="mt-6 font-ancizar text-5xl font-bold leading-tight text-white lg:text-7xl">
-          {project.title}
-        </h2>
-
-        <p className="mt-8 max-w-xl text-lg leading-9 text-zinc-400">
-          {project.description}
-        </p>
-
-        <div className="mt-10 flex flex-wrap gap-5">
-
-          {project.liveUrl && (
-            <a
-              href={project.liveUrl}
-              target="_blank"
-              rel="noreferrer"
-              className="rounded-full bg-white px-8 py-4 font-semibold text-black transition-all duration-300 hover:-translate-y-1 hover:scale-105"
-            >
-              Live Demo →
-            </a>
-          )}
-
-          <a
-            href={project.githubUrl}
-            target="_blank"
-            rel="noreferrer"
-            className="rounded-full border border-zinc-700 px-8 py-4 text-white transition-all duration-300 hover:border-purple-500 hover:bg-zinc-900"
-          >
-            GitHub
-          </a>
-
-        </div>
-
-        {/* Counter */}
-
-        <div className="mt-20 flex items-center gap-6">
-
-          <span className="text-6xl font-bold text-zinc-700">
-            {String(index + 1).padStart(2, "0")}
-          </span>
-
-          <div className="h-px flex-1 bg-zinc-800"></div>
-
-          <span className="text-zinc-500">
-            {String(projects.length).padStart(2, "0")}
-          </span>
-
+          {/* Animated Horizontal Track Line */}
+          <div className="relative h-0.5 w-64 bg-zinc-800 overflow-hidden rounded-full">
+            <div
+              ref={progressBarRef}
+              className="absolute inset-0 bg-linear-to-r from-zinc-400 to-white will-change-transform scale-x-0"
+            />
+          </div>
         </div>
 
       </div>
-
-    </div>
-  </section>
-))}
-      </div>
-    </div>
-
-    {/* Progress Indicator */}
-    <div className="absolute bottom-10 left-1/2 flex -translate-x-1/2 items-center gap-3">
-
-      {projects.map((_, i) => (
-        <div
-          key={i}
-          className="h-1 w-12 overflow-hidden rounded-full bg-zinc-800"
-        >
-          <div
-            className={`h-full transition-all duration-500 ${
-              i <= index
-                ? "w-full bg-purple-500"
-                : "w-0"
-            }`}
-          />
-        </div>
-      ))}
-
-    </div>
-
-    {/* Background Decoration */}
-    <div className="pointer-events-none absolute -left-40 top-1/2 h-96 w-96 -translate-y-1/2 rounded-full bg-purple-600/10 blur-[120px]" />
-
-    <div className="pointer-events-none absolute -right-40 top-1/2 h-96 w-96 -translate-y-1/2 rounded-full bg-blue-500/10 blur-[120px]" />
-
-  </section>
-))}
-
-</div>
-
-</div>
-
-</section>
-);
+    </section>
+  );
 };

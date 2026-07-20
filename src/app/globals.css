@@ -9,27 +9,34 @@
   --font-lily: var(--font-lily-script-one)
 }
 
-body{
-  background-color: #050505;
-}
-.featuredSwiper {
-  padding-bottom: 70px;
-}
-
-.featuredSwiper .swiper-pagination {
-  bottom: 0 !important;
+@layer base {
+  body {
+    background-color: #050505;
+    color: #f5f5f7;
+    overflow-x: hidden;
+  }
 }
 
-.featuredSwiper .swiper-pagination-bullet {
-  width: 10px;
-  height: 10px;
-  background: #555;
-  opacity: 1;
-  transition: all .3s ease;
+/* Ensure smooth transforms and rendering for Lenis & GSAP */
+html.lenis, html.lenis body {
+  height: auto;
 }
 
-.featuredSwiper .swiper-pagination-bullet-active {
-  width: 28px;
-  border-radius: 9999px;
-  background: white;
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+/* Hardware Acceleration Helpers */
+.will-change-transform {
+  will-change: transform;
+  transform: translateZ(0);
+  backface-visibility: hidden;
 }

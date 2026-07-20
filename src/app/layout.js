@@ -1,6 +1,7 @@
 import "./globals.css";
 import { Geist, Geist_Mono, Lily_Script_One } from "next/font/google";
 import { Ancizar_Serif, Inter, Instrument_Serif } from "next/font/google";
+import SmoothScrollProvider from "./components/SmoothScrollProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -47,7 +48,9 @@ export default function RootLayout({ children }) {
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} ${instrumentSerif.variable} ${inter.variable} ${ancizarSerif.variable}     ${lilyScriptOne.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">{children}</body>
+     <body className="antialiased bg-[#050505]">
+        <SmoothScrollProvider>{children}</SmoothScrollProvider>
+      </body>
     </html>
   );
 }
