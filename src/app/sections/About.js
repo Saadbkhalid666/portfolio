@@ -34,11 +34,11 @@ export const About = () => {
       />
 
       <div className="container mx-auto max-w-7xl relative z-10">
+            <p className="font-instrument text-[#6e6e73] text-lg ">02 - About</p>
         <div className="flex flex-col-reverse items-center gap-12 lg:flex-row lg:justify-between lg:gap-16">
           
           {/* Main Content Area */}
           <article className="max-w-2xl text-center lg:text-left">
-            
             <h2 
               id="about-heading"
               className="font-lily text-4xl sm:text-5xl lg:text-6xl text-white font-bold leading-tight tracking-tight"
