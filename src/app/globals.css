@@ -12,3 +12,24 @@
 body{
   background-color: #050505;
 }
+.featuredSwiper {
+  padding-bottom: 70px;
+}
+
+.featuredSwiper .swiper-pagination {
+  bottom: 0 !important;
+}
+
+.featuredSwiper .swiper-pagination-bullet {
+  width: 10px;
+  height: 10px;
+  background: #555;
+  opacity: 1;
+  transition: all .3s ease;
+}
+
+.featuredSwiper .swiper-pagination-bullet-active {
+  width: 28px;
+  border-radius: 9999px;
+  background: white;
+}

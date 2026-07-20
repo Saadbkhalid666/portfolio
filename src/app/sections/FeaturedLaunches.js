@@ -1,230 +1,211 @@
-import { useRef, useEffect, useState } from "react";
+"use client";
+
+import { useRef } from "react";
 import Image from "next/image";
 
-// Import your project images here
-import nexChatLogo from "../assets/nexchat.png";
+import { Swiper, SwiperSlide } from "swiper/react";
+import {
+  Navigation,
+  Pagination,
+  Keyboard,
+  Mousewheel,
+  Autoplay,
+} from "swiper/modules";
+
+import "swiper/css";
+import "swiper/css/navigation";
+import "swiper/css/pagination";
+
+import projectOneLogo from "../assets/project1.png";
 import projectTwoLogo from "../assets/project2.png";
+import projectThreeLogo from "../assets/project3.png";
+import projectFourLogo from "../assets/project4.png";
+import projectFiveLogo from "../assets/project5.png";
+import projectSixLogo from "../assets/project6.png";
 
 export const FeaturedProjects = () => {
-  const containerRef = useRef(null);
-  const [scrollProgress, setScrollProgress] = useState(0);
+  const prevRef = useRef(null);
+  const nextRef = useRef(null);
 
   const projects = [
     {
       id: "nexchat",
       title: "NexChat Platform",
-      category: "03 - Production Logs",
+      category: "01 • Real-Time Communication",
       description:
-        "NexChat is a high-performance, real-time messaging application built for seamless communication. Featuring a modern glassmorphic UI, secure authentication, and a powerful administrative dashboard.",
-      image: nexChatLogo,
-      liveUrl: "https://example.com",
-      githubUrl: "https://github.com",
+        "NexChat is a high-performance real-time messaging platform with secure authentication, Socket.IO communication, an admin dashboard, and a modern UI built for speed and scalability.",
+      image: projectOneLogo,
+      liveUrl: "https://nexchat-live.vercel.app",
+      githubUrl: "https://github.com/Saadbkhalid666/nexchat",
     },
     {
-      id: "ai-assistant",
-      title: "AI Chatbot Engine",
-      category: "04 - AI Solution",
+      id: "autolog-ai",
+      title: "AutoLog.AI",
+      category: "02 • Smart Automotive AI",
       description:
-        "An intelligent conversational AI chatbot interface integrated with custom knowledge bases. Built with Next.js and Python (Flask) backend to handle automated customer inquiries with sub-second response times.",
+        "An AI-powered vehicle management platform featuring OCR receipt scanning, chatbot assistance, expense tracking, and automated service reminders.",
+      image: projectThreeLogo,
+      githubUrl: "https://github.com/Saadbkhalid666/autolog.ai",
+    },
+    {
+      id: "neurovisionx",
+      title: "NeuroVisionX",
+      category: "03 • Computer Vision",
+      description:
+        "Browser-based computer vision application performing real-time face and hand detection using modern AI models with React and Tailwind CSS.",
+      image: projectFourLogo,
+      githubUrl: "https://github.com/Saadbkhalid666/neurovisionx",
+    },
+    {
+      id: "ks-traders",
+      title: "KS Traders",
+      category: "04 • B2B Commerce",
+      description:
+        "Wholesale e-commerce platform built with Next.js, Redux Toolkit, secure checkout, and a responsive admin-friendly architecture.",
       image: projectTwoLogo,
-      liveUrl: "https://example.com",
       githubUrl: "https://github.com",
     },
     {
-      id: "project-three",
-      title: "E-Commerce SaaS API",
-      category: "05 - Backend Systems",
+      id: "mrs-enterprise",
+      title: "M.R.S Enterprise",
+      category: "05 • Business Management",
       description:
-        "Scalable microservices architecture designed for high-concurrency order processing, real-time inventory synchronization, and webhooks management.",
-      image: nexChatLogo,
-      githubUrl: "https://github.com",
-    },
-    {
-      id: "project-four",
-      title: "Analytics Dashboard",
-      category: "06 - Data Visualization",
-      description:
-        "Real-time analytics portal featuring custom data visualization widgets, automated report generation, and role-based access management.",
-      image: projectTwoLogo,
-      liveUrl: "https://example.com",
-      githubUrl: "https://github.com",
-    },
-    {
-      id: "project-five",
-      title: "Mobile Workflow App",
-      category: "07 - Cross-Platform",
-      description:
-        "Cross-platform task management tool featuring offline-first capability, real-time sync via WebSockets, and push notifications.",
-      image: nexChatLogo,
-      githubUrl: "https://github.com",
-    },
-    {
-      id: "project-six",
-      title: "AI Agent Orchestrator",
-      category: "08 - AI Automation",
-      description:
-        "Multi-agent AI platform built to execute complex workflows, automated browser interactions, and document parsing for enterprise workflows.",
-      image: projectTwoLogo,
-      liveUrl: "https://example.com",
-      githubUrl: "https://github.com",
+        "Enterprise management software for handling workflows, inventory, client operations, and reporting with a scalable backend.",
+      image: projectSixLogo,
+      githubUrl: "https://github.com/Saadbkhalid666/m.r.s-enterprise",
     },
   ];
 
-  // Calculate vertical-to-horizontal scroll translation ratio
-  useEffect(() => {
-    const handleScroll = () => {
-      if (!containerRef.current) return;
-      const { top, height } = containerRef.current.getBoundingClientRect();
-      const windowHeight = window.innerHeight;
-      const totalScrollableDistance = height - windowHeight;
-
-      if (totalScrollableDistance <= 0) return;
-
-      const progress = -top / totalScrollableDistance;
-      const clampedProgress = Math.max(0, Math.min(1, progress));
-      setScrollProgress(clampedProgress);
-    };
-
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, [containerRef]);
-
-  // Manual scroll trigger via buttons
-  const scrollToProjectIndex = (index) => {
-    if (!containerRef.current) return;
-    const { height } = containerRef.current.getBoundingClientRect();
-    const windowHeight = window.innerHeight;
-    const totalScrollableDistance = height - windowHeight;
-    const step = totalScrollableDistance / (projects.length - 1);
-    
-    const containerTop = containerRef.current.offsetTop;
-    window.scrollTo({
-      top: containerTop + step * index,
-      behavior: "smooth",
-    });
-  };
-
-  const currentIndex = Math.min(
-    projects.length - 1,
-    Math.floor(scrollProgress * projects.length)
-  );
-
   return (
-    // Outer Container gives height to scroll through (600vh = 6 screens of scrolling)
-    <div ref={containerRef} className="relative h-[600vh] bg-black text-[#f5f5f7]">
-      {/* Sticky Viewport Container */}
-      <section 
-        id="featured-launches"
-        aria-labelledby="featured-heading" 
-        className="sticky top-0 h-screen w-full overflow-hidden flex flex-col justify-center px-6"
-      >
-        <div className="container mx-auto max-w-7xl w-full">
-          {/* Header & Controls Bar */}
-          <div className="flex items-end justify-between mb-8 sm:mb-12">
-            <div>
-              <p className="text-zinc-500 text-sm font-medium tracking-wide mb-1 font-instrument">
-                {projects[currentIndex].category}
-              </p>
-              <h2 
-                id="featured-heading"
-                className="text-2xl sm:text-3xl font-extrabold uppercase tracking-wider text-white italic"
-              >
-                Featured Launches
-              </h2>
-            </div>
+    <section className="bg-[#050505] py-32 text-white">
+      <div className="mx-auto max-w-7xl px-6">
+        {/* Header */}
+        <div className="mb-14 flex items-center justify-between">
+          <div>
+            <p className="font-instrument text-zinc-400 uppercase tracking-[0.3em] text-sm">
+               03 - Production Logs
+            </p>
 
-            {/* Slider Navigation Arrows */}
-            <div className="flex items-center gap-3">
-              <button
-                onClick={() => scrollToProjectIndex(Math.max(0, currentIndex - 1))}
-                disabled={currentIndex === 0}
-                aria-label="Previous Project"
-                className="p-3 rounded-full border border-zinc-800 bg-zinc-950 text-zinc-300 hover:text-white hover:border-zinc-600 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
-              >
-                ←
-              </button>
-              <span className="text-xs text-zinc-500 font-mono">
-                0{currentIndex + 1} / 0{projects.length}
-              </span>
-              <button
-                onClick={() => scrollToProjectIndex(Math.min(projects.length - 1, currentIndex + 1))}
-                disabled={currentIndex === projects.length - 1}
-                aria-label="Next Project"
-                className="p-3 rounded-full border border-zinc-800 bg-zinc-950 text-zinc-300 hover:text-white hover:border-zinc-600 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
-              >
-                →
-              </button>
-            </div>
+            <h2 className="mt-3 text-5xl font-bold">Selected Projects</h2>
           </div>
 
-          {/* Horizontal Track Area */}
-          <div className="overflow-hidden w-full">
-            <div
-              className="flex transition-transform duration-500 ease-out"
-              style={{
-                transform: `translateX(-${scrollProgress * ((projects.length - 1) / projects.length) * 100}%)`,
-                width: `${projects.length * 100}%`,
-              }}
+          <div className="hidden gap-3 md:flex">
+            <button
+              ref={prevRef}
+              className="grid h-12 w-12 place-items-center rounded-full border border-zinc-800 transition hover:border-white"
             >
-              {projects.map((project) => (
-                <div
-                  key={project.id}
-                  className="w-full shrink-0 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-center min-h-95"
-                  style={{ width: `${100 / projects.length}%` }}
-                >
-                  {/* Image Box - HIDDEN ON MOBILE (`hidden md:flex`) */}
-                  <div className="hidden md:flex lg:col-span-5 justify-center">
-                    <div className="w-full aspect-square max-w-md rounded-2xl bg-[#0a0a0a] border border-zinc-900 p-8 flex items-center justify-center transition-all duration-300 hover:border-zinc-700">
-                      <div className="relative flex items-center justify-center">
-                        <Image
-                          src={project.image}
-                          alt={`${project.title} Preview`}
-                          className="object-contain"
-                          priority
-                          quality={90}
-                        />
-                      </div>
-                    </div>
-                  </div>
+              ←
+            </button>
 
-                  {/* Project Details Column */}
-                  <article className="col-span-1 lg:col-span-7 flex flex-col justify-center text-left">
-                    <h3 className="text-3xl sm:text-4xl lg:text-5xl font-semibold text-white tracking-tight mb-6 font-ancizar">
-                      {project.title}
-                    </h3>
-
-                    <p className="text-zinc-400 text-base sm:text-lg leading-relaxed max-w-xl font-normal mb-8">
-                      {project.description}
-                    </p>
-
-                    {/* Action Buttons */}
-                    <div className="flex flex-wrap items-center gap-4">
-                      {project.liveUrl && (
-                        <a
-                          href={project.liveUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="px-6 py-3 rounded-xl bg-white text-black font-semibold text-sm transition-all duration-300 hover:bg-zinc-200"
-                        >
-                          View Live ↗
-                        </a>
-                      )}
-                      <a
-                        href={project.githubUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="px-6 py-3 rounded-xl border border-zinc-700 bg-zinc-900 text-white font-semibold text-sm transition-all duration-300 hover:border-zinc-500 hover:bg-zinc-800"
-                      >
-                        Source Code
-                      </a>
-                    </div>
-                  </article>
-                </div>
-              ))}
-            </div>
+            <button
+              ref={nextRef}
+              className="grid h-12 w-12 place-items-center rounded-full border border-zinc-800 transition hover:border-white"
+            >
+              →
+            </button>
           </div>
         </div>
-      </section>
-    </div>
+
+        <Swiper
+          modules={[Navigation, Pagination, Keyboard, Mousewheel, Autoplay]}
+          slidesPerView={1}
+          speed={700}
+          autoplay={{
+            delay: 5000,
+            disableOnInteraction: false,
+          }}
+          keyboard={{
+            enabled: true,
+          }}
+          mousewheel={{
+            forceToAxis: true,
+          }}
+          pagination={{
+            clickable: true,
+          }}
+          onBeforeInit={(swiper) => {
+            setTimeout(() => {
+              swiper.params.navigation.prevEl = prevRef.current;
+              swiper.params.navigation.nextEl = nextRef.current;
+
+              swiper.navigation.destroy();
+              swiper.navigation.init();
+              swiper.navigation.update();
+            });
+          }}
+          className="featuredSwiper"
+        >
+          {projects.map((project, index) => (
+            <SwiperSlide key={project.id}>
+              <div className="grid min-h-150 grid-cols-1 items-center gap-12 lg:grid-cols-2 mb-6 ">
+                {/* Image */}
+                <div className="flex justify-center ">
+      <div className="group relative overflow-hidden rounded-3xl border border-zinc-800 bg-linear-to-br from-zinc-900 to-black p-8 shadow-2xl">
+                    <Image
+                      src={project.image}
+                      alt={project.title}
+                      priority={index === 0}
+                      quality={100}
+                     className="h-auto w-full max-w-lg object-contain transition-all duration-700 group-hover:scale-110 group-hover:rotate-1"
+                    />
+                  </div>
+                </div>
+
+                {/* Content */}
+                <div>
+                  <p className="mb-3 font-mono text-sm uppercase tracking-[0.3em] text-zinc-400">
+                    {project.category}
+                  </p>
+
+                  <h3 className="font-ancizar text-4xl font-semibold leading-tight text-white lg:text-6xl">
+                    {project.title}
+                  </h3>
+
+                  <p className="mt-8 max-w-xl text-lg leading-8 text-zinc-400">
+                    {project.description}
+                  </p>
+
+                  {/* Buttons */}
+                  <div className="mt-10 flex flex-wrap gap-4">
+                    {project.liveUrl && (
+                      <a
+                        href={project.liveUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="rounded-xl bg-white px-7 py-3 font-semibold text-black transition-all duration-300 hover:-translate-y-1 hover:bg-zinc-200"
+                      >
+                        Live Demo ↗
+                      </a>
+                    )}
+
+                    <a
+                      href={project.githubUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="rounded-xl border border-zinc-700 px-7 py-3 font-semibold text-white transition-all duration-300 hover:-translate-y-1 hover:border-purple-500 hover:bg-zinc-900"
+                    >
+                      Source Code
+                    </a>
+                  </div>
+
+                  {/* Slide Counter */}
+                  <div className="mt-12 flex items-center gap-4">
+                    <span className="text-4xl font-bold text-zinc-700">
+                      {String(index + 1).padStart(2, "0")}
+                    </span>
+
+                    <div className="h-px flex-1 bg-zinc-800"></div>
+
+                    <span className="text-zinc-500">
+                      {String(projects.length).padStart(2, "0")}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </SwiperSlide>
+          ))}
+        </Swiper>
+      </div>
+    </section>
   );
 };
