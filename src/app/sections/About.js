@@ -1,3 +1,8 @@
 export const About = () => {
-    return <h1>hello it's about section</h1>
+    return <div className="container">
+        <div className="content-container">
+            
+        </div>
+        <div className="image-container"></div>
+    </div>
 }
