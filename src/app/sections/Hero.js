@@ -8,11 +8,11 @@ export const Hero = () => {
         <Scene />
       </div>
 
-      <div className="relative z-10 h-full max-w-7xl mx-auto px-8 grid   md:grid-cols-3 items-center">
-        <div className="flex flex-col justify-center">
+      <div className="relative z-10 h-full max-w-7xl mx-auto px-8  grid   md:grid-cols-3 items-center">
+        <div className="flex flex-col justify-center mt-10 sm:mt-0">
           <p className="text-purple-400 text-lg mb-2 font-inter ">Hello I&apos;m</p>
 
-          <h1 className="text-3xl md:text-4xl lg:text-6xl font-semibold text-[#f5f5f7] font-ancizar ">
+          <h1 className="text-5xl font-semibold text-[#f5f5f7] font-ancizar ">
             Saad
             <br />
             Bin Khalid
