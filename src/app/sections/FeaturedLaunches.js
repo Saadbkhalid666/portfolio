@@ -72,13 +72,32 @@ export const FeaturedProjects = () => {
     },
   ];
 
+  const schemaData = {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    "name": "Featured Projects & Production Logs",
+    "description": "Selected software development projects showcasing real-time apps, AI solutions, computer vision, and e-commerce platforms.",
+    "itemListElement": projects.map((project, index) => ({
+      "@type": "ListItem",
+      "position": index + 1,
+      "item": {
+        "@type": "SoftwareApplication",
+        "name": project.title,
+        "description": project.description,
+        "applicationCategory": project.category,
+        "url": project.liveUrl || project.githubUrl,
+        "sameAs": [project.githubUrl, project.liveUrl].filter(Boolean),
+        "image": project.image?.src || "",
+      },
+    })),
+  };
+
   useLayoutEffect(() => {
     const section = sectionRef.current;
     const track = trackRef.current;
     if (!section || !track) return;
 
     const ctx = gsap.context(() => {
-      // Calculate true total distance by summing bounding widths of all items
       const getScrollAmount = () => {
         const cards = gsap.utils.toArray(".project-item");
         let totalWidth = 0;
@@ -116,13 +135,11 @@ export const FeaturedProjects = () => {
         },
       });
 
-      // Slide track horizontally based on true total width
       mainTimeline.to(track, {
         x: () => -getScrollAmount(),
         ease: "none",
       });
 
-      // Internal card entrance animations
       const cards = gsap.utils.toArray(".project-item");
       cards.forEach((card) => {
         const imageBox = card.querySelector(".project-image-box");
@@ -190,43 +207,53 @@ export const FeaturedProjects = () => {
   }, [projects.length]);
 
   return (
-    <section ref={sectionRef} className="relative w-full bg-[#050505] text-[#f5f5f7] ">
+    <section
+      ref={sectionRef}
+      id="featured-projects"
+      aria-label="Featured Projects Portfolio"
+      className="relative w-full bg-[#050505] text-[#f5f5f7]"
+    >
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaData) }}
+      />
+
       <div className="relative h-screen w-full flex flex-col justify-between pt-4 pb-12 sm:pb-8">
         
-        {/* Fixed Header */}
-        <div className="z-20 px-4 text-center shrink-0">
+        <header className="z-20 px-4 text-center shrink-0">
           <p className="font-mono text-zinc-400 uppercase tracking-[0.25em] text-xs">
             03 - Production Logs
           </p>
-          <h2 className="mt-1 text-2xl sm:text-4xl font-bold tracking-tight">Selected Projects</h2>
-        </div>
+          <h2 className="mt-1 text-2xl sm:text-4xl font-bold tracking-tight">
+            Selected Projects
+          </h2>
+        </header>
 
-        {/* Horizontal Track Wrapper */}
         <div className="relative w-full flex-1 min-h-0 overflow-hidden">
           <div
             ref={trackRef}
             className="flex flex-row flex-nowrap h-full w-max will-change-transform"
           >
             {projects.map((project, index) => (
-              <div
+              <article
                 key={project.id}
+                id={`project-${project.id}`}
+                aria-label={project.title}
                 className="project-item relative shrink-0 w-screen h-full flex items-center justify-center px-4 sm:px-12 lg:px-20"
               >
-                {/* Background Glow */}
                 <div
+                  aria-hidden="true"
                   className={`pointer-events-none absolute inset-0 bg-linear-to-br ${project.bgGlow} opacity-60 blur-[100px] sm:blur-[130px]`}
                 />
 
-                {/* Card Container - max-w and padding adjusted for mobile */}
                 <div className="relative z-10 mx-auto grid w-full max-w-[calc(100vw-2rem)] sm:max-w-7xl grid-cols-1 lg:grid-cols-12 gap-3 lg:gap-12 items-center">
                   
-                  {/* Image Box */}
                   <div className="lg:col-span-7 flex justify-center w-full">
                     <div className="project-image-box group relative w-full max-w-sm lg:max-w-2xl overflow-hidden rounded-2xl sm:rounded-3xl border border-white/10 bg-linear-to-b from-white/10 via-zinc-900/80 to-black p-2 sm:p-6 backdrop-blur-xl shadow-2xl transition-all duration-500">
                       <div className="project-image-inner relative w-full aspect-16/10 overflow-hidden rounded-xl sm:rounded-2xl bg-black/50">
                         <Image
                           src={project.image}
-                          alt={project.title}
+                          alt={`${project.title} - Screenshot preview`}
                           priority={index === 0}
                           quality={90}
                           fill
@@ -237,7 +264,6 @@ export const FeaturedProjects = () => {
                     </div>
                   </div>
 
-                  {/* Text Details */}
                   <div className="lg:col-span-5 flex flex-col justify-center text-left">
                     <span className="project-category font-mono text-[10px] sm:text-xs uppercase tracking-[0.2em] text-zinc-400">
                       {project.category}
@@ -251,46 +277,47 @@ export const FeaturedProjects = () => {
                       {project.description}
                     </p>
 
-                    <div className="mt-3 sm:mt-8 flex flex-wrap items-center gap-2.5 sm:gap-3">
+                    <nav aria-label={`${project.title} action links`} className="mt-3 sm:mt-8 flex flex-wrap items-center gap-2.5 sm:gap-3">
                       {project.liveUrl && (
                         <MagneticButton
                           href={project.liveUrl}
                           target="_blank"
-                          rel="noreferrer"
+                          rel="noopener noreferrer"
+                          aria-label={`View live demo of ${project.title}`}
                           className="project-btn rounded-full bg-white px-4 sm:px-6 py-2 sm:py-3 text-xs sm:text-sm font-semibold text-black transition-all hover:bg-zinc-200"
                         >
-                          Live Demo <span className="ml-1">↗</span>
+                          Live Demo <span className="ml-1" aria-hidden="true">↗</span>
                         </MagneticButton>
                       )}
 
                       <MagneticButton
                         href={project.githubUrl}
                         target="_blank"
-                        rel="noreferrer"
+                        rel="noopener noreferrer"
+                        aria-label={`View GitHub repository for ${project.title}`}
                         className="project-btn rounded-full border border-zinc-700/80 bg-zinc-900/60 px-4 sm:px-6 py-2 sm:py-3 text-xs sm:text-sm font-semibold text-white backdrop-blur-md transition-colors hover:border-zinc-400 hover:bg-zinc-800"
                       >
                         GitHub
                       </MagneticButton>
-                    </div>
+                    </nav>
                   </div>
 
                 </div>
-              </div>
+              </article>
             ))}
           </div>
         </div>
 
-        {/* Footer Bar */}
         <div className="pointer-events-none absolute bottom-3 sm:bottom-6 left-1/2 -translate-x-1/2 z-20 w-full max-w-7xl px-6 sm:px-20 flex items-center justify-between shrink-0">
-          <div className="flex items-center gap-1.5 font-mono text-xs tracking-widest text-zinc-400">
+          <div className="flex items-center gap-1.5 font-mono text-xs tracking-widest text-zinc-400" aria-live="polite">
             <span ref={counterRef} className="text-white font-bold text-sm sm:text-base">
               01
             </span>
-            <span>/</span>
+            <span aria-hidden="true">/</span>
             <span>{String(projects.length).padStart(2, "0")}</span>
           </div>
 
-          <div className="relative h-0.5 w-28 sm:w-64 bg-zinc-800 overflow-hidden rounded-full">
+          <div className="relative h-0.5 w-28 sm:w-64 bg-zinc-800 overflow-hidden rounded-full" aria-hidden="true">
             <div
               ref={progressBarRef}
               className="absolute inset-0 bg-linear-to-r from-zinc-400 to-white will-change-transform scale-x-0"
