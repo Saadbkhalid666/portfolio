@@ -4,6 +4,7 @@ import { About } from "./sections/About";
 import { FeaturedProjects } from "./sections/FeaturedLaunches";
 import { Hero } from "./sections/Hero";
 import { NavBar } from "./sections/NavBar";
+import { TechStackSection } from "./sections/TechStackSection";
 
 
 export default function Page() {
@@ -14,6 +15,7 @@ export default function Page() {
   <Hero   />
   <About   />
   <FeaturedProjects   />
+  <TechStackSection    />
   </div>
 
   );
