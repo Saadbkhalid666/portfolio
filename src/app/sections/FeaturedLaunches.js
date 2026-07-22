@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useRef } from "react";
+import { useLayoutEffect, useRef } from "react";
 import { gsap, ScrollTrigger } from "../lib/gsap";
 import { MagneticButton } from "../components/MagneticButton";
 
@@ -55,7 +55,7 @@ export const FeaturedProjects = () => {
       description:
         "Wholesale e-commerce platform built with Next.js, Redux Toolkit, secure checkout, and a responsive admin-friendly architecture.",
       image: projectTwoLogo,
-      liveUrl:"https://kstraders.vercel.app",
+      liveUrl: "https://kstraders.vercel.app",
       githubUrl: "https://github.com",
       bgGlow: "from-amber-900/20 via-zinc-950/10 to-transparent",
     },
@@ -66,254 +66,231 @@ export const FeaturedProjects = () => {
       description:
         "Enterprise management software for handling workflows, inventory, client operations, and reporting with a scalable backend.",
       image: projectFiveLogo,
-      liveUrl:"https://mrsenterprise.vercel.app",
+      liveUrl: "https://mrsenterprise.vercel.app",
       githubUrl: "https://github.com/Saadbkhalid666/m.r.s-enterprise",
       bgGlow: "from-rose-900/20 via-slate-950/10 to-transparent",
     },
   ];
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const section = sectionRef.current;
     const track = trackRef.current;
     if (!section || !track) return;
 
     const ctx = gsap.context(() => {
-      const mm = gsap.matchMedia();
-
-      mm.add("(min-width: 1024px)", () => {
-        const totalProjects = projects.length;
-        const totalScrollWidth = track.scrollWidth - window.innerWidth;
-
-        const mainTimeline = gsap.timeline({
-          scrollTrigger: {
-            trigger: section,
-            start: "top top",
-            end: () => `+=${totalScrollWidth}`,
-            pin: true,
-            scrub: 1,
-            anticipatePin: 1,
-            invalidateOnRefresh: true,
-            onUpdate: (self) => {
-              if (progressBarRef.current) {
-                gsap.set(progressBarRef.current, {
-                  scaleX: self.progress,
-                  transformOrigin: "left center",
-                });
-              }
-
-              if (counterRef.current) {
-                const currentIdx = Math.min(
-                  Math.floor(self.progress * totalProjects) + 1,
-                  totalProjects
-                );
-                counterRef.current.innerText = String(currentIdx).padStart(2, "0");
-              }
-            },
-          },
-        });
-
-        mainTimeline.to(track, {
-          x: -totalScrollWidth,
-          ease: "none",
-        });
-
+      // Calculate true total distance by summing bounding widths of all items
+      const getScrollAmount = () => {
         const cards = gsap.utils.toArray(".project-item");
+        let totalWidth = 0;
+        cards.forEach((card) => {
+          totalWidth += card.getBoundingClientRect().width;
+        });
+        return totalWidth - window.innerWidth;
+      };
 
-        cards.forEach((card, i) => {
-          const imageBox = card.querySelector(".project-image-box");
-          const imageInner = card.querySelector(".project-image-inner");
-          const category = card.querySelector(".project-category");
-          const title = card.querySelector(".project-title");
-          const desc = card.querySelector(".project-desc");
-          const buttons = card.querySelectorAll(".project-btn");
-
-          gsap.fromTo(
-            imageBox,
-            { scale: 0.92, opacity: 0.3 },
-            {
-              scale: 1,
-              opacity: 1,
-              ease: "power2.out",
-              scrollTrigger: {
-                trigger: card,
-                containerAnimation: mainTimeline,
-                start: "left 85%",
-                end: "left 35%",
-                scrub: true,
-              },
+      const mainTimeline = gsap.timeline({
+        scrollTrigger: {
+          trigger: section,
+          start: "top top",
+          end: () => `+=${getScrollAmount()}`,
+          pin: true,
+          scrub: 1,
+          anticipatePin: 1,
+          invalidateOnRefresh: true,
+          onUpdate: (self) => {
+            if (progressBarRef.current) {
+              gsap.set(progressBarRef.current, {
+                scaleX: self.progress,
+                transformOrigin: "left center",
+              });
             }
-          );
 
-          gsap.fromTo(
-            imageInner,
-            { x: -60, scale: 1.05 },
-            {
-              x: 60,
-              scale: 1,
-              ease: "none",
-              scrollTrigger: {
-                trigger: card,
-                containerAnimation: mainTimeline,
-                start: "left right",
-                end: "right left",
-                scrub: true,
-              },
+            if (counterRef.current) {
+              const currentIdx = Math.min(
+                Math.floor(self.progress * projects.length) + 1,
+                projects.length
+              );
+              counterRef.current.innerText = String(currentIdx).padStart(2, "0");
             }
-          );
+          },
+        },
+      });
 
-          const contentTl = gsap.timeline({
+      // Slide track horizontally based on true total width
+      mainTimeline.to(track, {
+        x: () => -getScrollAmount(),
+        ease: "none",
+      });
+
+      // Internal card entrance animations
+      const cards = gsap.utils.toArray(".project-item");
+      cards.forEach((card) => {
+        const imageBox = card.querySelector(".project-image-box");
+        const category = card.querySelector(".project-category");
+        const title = card.querySelector(".project-title");
+        const desc = card.querySelector(".project-desc");
+        const buttons = card.querySelectorAll(".project-btn");
+
+        gsap.fromTo(
+          imageBox,
+          { scale: 0.9, opacity: 0.4 },
+          {
+            scale: 1,
+            opacity: 1,
+            ease: "power2.out",
             scrollTrigger: {
               trigger: card,
               containerAnimation: mainTimeline,
-              start: "left 70%",
-              toggleActions: "play reverse play reverse",
+              start: "left 90%",
+              end: "left 20%",
+              scrub: true,
             },
-          });
+          }
+        );
 
-          contentTl
-            .fromTo(
-              category,
-              { y: 25, opacity: 0 },
-              { y: 0, opacity: 1, duration: 0.6, ease: "power3.out" }
-            )
-            .fromTo(
-              title,
-              { y: 35, opacity: 0 },
-              { y: 0, opacity: 1, duration: 0.7, ease: "power3.out" },
-              "-=0.4"
-            )
-            .fromTo(
-              desc,
-              { y: 30, opacity: 0 },
-              { y: 0, opacity: 1, duration: 0.6, ease: "power3.out" },
-              "-=0.5"
-            )
-            .fromTo(
-              buttons,
-              { y: 20, opacity: 0 },
-              { y: 0, opacity: 1, duration: 0.5, stagger: 0.1, ease: "power3.out" },
-              "-=0.4"
-            );
+        const contentTl = gsap.timeline({
+          scrollTrigger: {
+            trigger: card,
+            containerAnimation: mainTimeline,
+            start: "left 75%",
+            toggleActions: "play reverse play reverse",
+          },
         });
-      });
 
-      mm.add("(max-width: 1023px)", () => {
-        const cards = gsap.utils.toArray(".project-item");
-        cards.forEach((card) => {
-          gsap.fromTo(
-            card,
-            { opacity: 0, y: 50 },
-            {
-              opacity: 1,
-              y: 0,
-              duration: 0.8,
-              ease: "power3.out",
-              scrollTrigger: {
-                trigger: card,
-                start: "top 80%",
-              },
-            }
+        contentTl
+          .fromTo(
+            category,
+            { y: 15, opacity: 0 },
+            { y: 0, opacity: 1, duration: 0.4, ease: "power3.out" }
+          )
+          .fromTo(
+            title,
+            { y: 20, opacity: 0 },
+            { y: 0, opacity: 1, duration: 0.5, ease: "power3.out" },
+            "-=0.2"
+          )
+          .fromTo(
+            desc,
+            { y: 15, opacity: 0 },
+            { y: 0, opacity: 1, duration: 0.4, ease: "power3.out" },
+            "-=0.3"
+          )
+          .fromTo(
+            buttons,
+            { y: 10, opacity: 0 },
+            { y: 0, opacity: 1, duration: 0.3, stagger: 0.08, ease: "power3.out" },
+            "-=0.2"
           );
-        });
       });
+
+      ScrollTrigger.refresh();
     }, section);
 
     return () => ctx.revert();
   }, [projects.length]);
 
   return (
-    <section ref={sectionRef} className="relative bg-[#050505] text-[#f5f5f7] overflow-hidden mt-20">
-      <div className="relative lg:h-screen lg:w-full lg:overflow-hidden flex flex-col justify-between">
-            <p className="text-center font-instrument text-zinc-400 uppercase tracking-[0.3em] text-sm">
-               03 - Production Logs
-            </p>
-
-            <h2 className="mt-3 text-center text-5xl font-bold">Selected Projects</h2>
-        <div
-          ref={trackRef}
-          className="flex flex-col lg:flex-row h-full w-full lg:will-change-transform"
-        >
-          {projects.map((project, index) => (
-            <div
-              key={project.id}
-              className="project-item relative shrink-0 w-full lg:w-screen h-auto lg:h-screen flex items-center justify-center px-6 sm:px-12 lg:px-20 py-16 lg:py-0 border-b border-zinc-900/50 lg:border-b-0"
-            >
-              <div
-                className={`pointer-events-none absolute inset-0 bg-linear-to-br ${project.bgGlow} opacity-60 blur-[130px]`}
-              />
-
-              <div className="relative z-10 mx-auto grid w-full max-w-7xl grid-cols-1 gap-10 lg:gap-16 lg:grid-cols-12 items-center">
-                
-                <div className="lg:col-span-7 flex justify-center w-full">
-                  <div className="project-image-box group relative w-full max-w-2xl overflow-hidden rounded-3xl border border-white/10 bg-linear-to-b from-white/10 via-zinc-900/80 to-black p-4 sm:p-8 backdrop-blur-xl shadow-[0_30px_100px_rgba(0,0,0,0.8)] transition-all duration-500 hover:border-white/20">
-                    
-                    <div className="pointer-events-none absolute -inset-px rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-radial from-white/15 to-transparent blur-md" />
-
-                    <div className="project-image-inner relative w-full aspect-16/10 overflow-hidden rounded-2xl bg-black/50">
-                      <Image
-                        src={project.image}
-                        alt={project.title}
-                        priority={index === 0}
-                        quality={95}
-                        fill
-                        sizes="(max-width: 1024px) 100vw, 55vw"
-                        className="object-contain p-4 sm:p-6 transition-transform duration-700 ease-out group-hover:scale-105"
-                      />
-                    </div>
-                  </div>
-                </div>
-
-                <div className="lg:col-span-5 flex flex-col justify-center">
-                  <span className="project-category font-mono text-xs sm:text-sm uppercase tracking-[0.3em] text-zinc-400">
-                    {project.category}
-                  </span>
-
-                  <h2 className="project-title mt-4 font-ancizar text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-white leading-[1.1]">
-                    {project.title}
-                  </h2>
-
-                  <p className="project-desc mt-6 max-w-xl text-base sm:text-lg leading-relaxed text-zinc-400 font-normal">
-                    {project.description}
-                  </p>
-
-                  <div className="mt-8 sm:mt-10 flex flex-wrap items-center gap-4">
-                    {project.liveUrl && (
-                      <MagneticButton
-                        href={project.liveUrl}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="project-btn rounded-full bg-white px-7 py-3.5 text-sm font-semibold text-black shadow-[0_0_20px_rgba(255,255,255,0.2)] transition-all duration-300 hover:shadow-[0_0_35px_rgba(255,255,255,0.4)]"
-                      >
-                        Live Demo <span className="ml-2">↗</span>
-                      </MagneticButton>
-                    )}
-
-                    <MagneticButton
-                      href={project.githubUrl}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="project-btn rounded-full border border-zinc-700/80 bg-zinc-900/60 px-7 py-3.5 text-sm font-semibold text-white backdrop-blur-md transition-colors duration-300 hover:border-zinc-400 hover:bg-zinc-800"
-                    >
-                      GitHub
-                    </MagneticButton>
-                  </div>
-                </div>
-
-              </div>
-            </div>
-          ))}
+    <section ref={sectionRef} className="relative w-full bg-[#050505] text-[#f5f5f7] ">
+      <div className="relative h-screen w-full flex flex-col justify-between pt-4 pb-12 sm:pb-8">
+        
+        {/* Fixed Header */}
+        <div className="z-20 px-4 text-center shrink-0">
+          <p className="font-mono text-zinc-400 uppercase tracking-[0.25em] text-xs">
+            03 - Production Logs
+          </p>
+          <h2 className="mt-1 text-2xl sm:text-4xl font-bold tracking-tight">Selected Projects</h2>
         </div>
 
-        <div className="hidden lg:flex pointer-events-none absolute bottom-8 left-1/2 -translate-x-1/2 z-20 w-full max-w-7xl px-20 items-center justify-between">
-          <div className="flex items-center gap-2 font-mono text-sm tracking-widest text-zinc-400">
-            <span ref={counterRef} className="text-white font-bold text-lg">
+        {/* Horizontal Track Wrapper */}
+        <div className="relative w-full flex-1 min-h-0 overflow-hidden">
+          <div
+            ref={trackRef}
+            className="flex flex-row flex-nowrap h-full w-max will-change-transform"
+          >
+            {projects.map((project, index) => (
+              <div
+                key={project.id}
+                className="project-item relative shrink-0 w-screen h-full flex items-center justify-center px-4 sm:px-12 lg:px-20"
+              >
+                {/* Background Glow */}
+                <div
+                  className={`pointer-events-none absolute inset-0 bg-linear-to-br ${project.bgGlow} opacity-60 blur-[100px] sm:blur-[130px]`}
+                />
+
+                {/* Card Container - max-w and padding adjusted for mobile */}
+                <div className="relative z-10 mx-auto grid w-full max-w-[calc(100vw-2rem)] sm:max-w-7xl grid-cols-1 lg:grid-cols-12 gap-3 lg:gap-12 items-center">
+                  
+                  {/* Image Box */}
+                  <div className="lg:col-span-7 flex justify-center w-full">
+                    <div className="project-image-box group relative w-full max-w-sm lg:max-w-2xl overflow-hidden rounded-2xl sm:rounded-3xl border border-white/10 bg-linear-to-b from-white/10 via-zinc-900/80 to-black p-2 sm:p-6 backdrop-blur-xl shadow-2xl transition-all duration-500">
+                      <div className="project-image-inner relative w-full aspect-16/10 overflow-hidden rounded-xl sm:rounded-2xl bg-black/50">
+                        <Image
+                          src={project.image}
+                          alt={project.title}
+                          priority={index === 0}
+                          quality={90}
+                          fill
+                          sizes="(max-width: 1024px) 85vw, 50vw"
+                          className="object-contain p-2 sm:p-6 transition-transform duration-700 ease-out group-hover:scale-105"
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Text Details */}
+                  <div className="lg:col-span-5 flex flex-col justify-center text-left">
+                    <span className="project-category font-mono text-[10px] sm:text-xs uppercase tracking-[0.2em] text-zinc-400">
+                      {project.category}
+                    </span>
+
+                    <h3 className="project-title mt-1 sm:mt-3 font-bold text-xl sm:text-4xl lg:text-5xl tracking-tight text-white leading-tight">
+                      {project.title}
+                    </h3>
+
+                    <p className="project-desc mt-1.5 sm:mt-4 max-w-xl text-xs sm:text-base leading-relaxed text-zinc-400 font-normal line-clamp-2 sm:line-clamp-4">
+                      {project.description}
+                    </p>
+
+                    <div className="mt-3 sm:mt-8 flex flex-wrap items-center gap-2.5 sm:gap-3">
+                      {project.liveUrl && (
+                        <MagneticButton
+                          href={project.liveUrl}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="project-btn rounded-full bg-white px-4 sm:px-6 py-2 sm:py-3 text-xs sm:text-sm font-semibold text-black transition-all hover:bg-zinc-200"
+                        >
+                          Live Demo <span className="ml-1">↗</span>
+                        </MagneticButton>
+                      )}
+
+                      <MagneticButton
+                        href={project.githubUrl}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="project-btn rounded-full border border-zinc-700/80 bg-zinc-900/60 px-4 sm:px-6 py-2 sm:py-3 text-xs sm:text-sm font-semibold text-white backdrop-blur-md transition-colors hover:border-zinc-400 hover:bg-zinc-800"
+                      >
+                        GitHub
+                      </MagneticButton>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Footer Bar */}
+        <div className="pointer-events-none absolute bottom-3 sm:bottom-6 left-1/2 -translate-x-1/2 z-20 w-full max-w-7xl px-6 sm:px-20 flex items-center justify-between shrink-0">
+          <div className="flex items-center gap-1.5 font-mono text-xs tracking-widest text-zinc-400">
+            <span ref={counterRef} className="text-white font-bold text-sm sm:text-base">
               01
             </span>
             <span>/</span>
             <span>{String(projects.length).padStart(2, "0")}</span>
           </div>
 
-          <div className="relative h-0.5 w-64 bg-zinc-800 overflow-hidden rounded-full">
+          <div className="relative h-0.5 w-28 sm:w-64 bg-zinc-800 overflow-hidden rounded-full">
             <div
               ref={progressBarRef}
               className="absolute inset-0 bg-linear-to-r from-zinc-400 to-white will-change-transform scale-x-0"
