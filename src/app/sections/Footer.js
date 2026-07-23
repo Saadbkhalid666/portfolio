@@ -1,4 +1,6 @@
-import React, { useState, useEffect, useRef } from "react";
+"use client";
+
+import React, { useState, useEffect, useLayoutEffect, useRef } from "react";
 import { FaCheckCircle } from "react-icons/fa";
 import {
   FaLinkedinIn,
@@ -6,34 +8,20 @@ import {
   FaGithub,
   FaArrowUpRightFromSquare,
   FaXmark,
-  
   FaCircleExclamation,
 } from "react-icons/fa6";
-
 import { MdOutlineMail, MdOutlineHourglassTop } from "react-icons/md";
+import { gsap, ScrollTrigger } from "../lib/gsap";
 
- 
 const EMAILJS_SERVICE_ID = "YOUR_SERVICE_ID";
 const EMAILJS_TEMPLATE_ID = "YOUR_TEMPLATE_ID";
 const EMAILJS_PUBLIC_KEY = "YOUR_PUBLIC_KEY";
 
 const SOCIALS = [
   { label: "GitHub", href: "https://github.com/Saadbkhalid666", Icon: FaGithub },
-  {
-    label: "LinkedIn",
-    href: "https://linkedin.com/in/saadbinkhalid666",
-    Icon: FaLinkedinIn,
-  },
-  {
-    label: "Instagram",
-    href: "https://instagram.com/sagit_saad",
-    Icon: FaInstagram,
-  },
-  {
-    label: "Email",
-    href: "mailto:saadbkhalid666@gmail.com",
-    Icon: MdOutlineMail,
-  },
+  { label: "LinkedIn", href: "https://linkedin.com/in/saadbinkhalid666", Icon: FaLinkedinIn },
+  { label: "Instagram", href: "https://instagram.com/sagit_saad", Icon: FaInstagram },
+  { label: "Email", href: "mailto:saadbkhalid666@gmail.com", Icon: MdOutlineMail },
 ];
 
 function useTerminalClock() {
@@ -41,10 +29,7 @@ function useTerminalClock() {
   useEffect(() => {
     const tick = () => {
       const d = new Date();
-      setTime(
-        d.toLocaleTimeString("en-GB", { hour12: false }) +
-          " PKT"
-      );
+      setTime(d.toLocaleTimeString("en-GB", { hour12: false }) + " PKT");
     };
     tick();
     const id = setInterval(tick, 1000);
@@ -55,13 +40,23 @@ function useTerminalClock() {
 
 function CollaborateModal({ open, onClose }) {
   const [form, setForm] = useState({ name: "", email: "", message: "" });
-  const [status, setStatus] = useState("idle"); // idle | sending | sent | error
+  const [status, setStatus] = useState("idle");
+  const overlayRef = useRef(null);
   const dialogRef = useRef(null);
 
   useEffect(() => {
     if (!open) return;
     const onKey = (e) => e.key === "Escape" && onClose();
     window.addEventListener("keydown", onKey);
+
+    const tl = gsap.timeline();
+    tl.fromTo(overlayRef.current, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.25, ease: "power2.out" }).fromTo(
+      dialogRef.current,
+      { autoAlpha: 0, y: 26, scale: 0.95 },
+      { autoAlpha: 1, y: 0, scale: 1, duration: 0.45, ease: "power4.out" },
+      "-=0.15"
+    );
+
     return () => window.removeEventListener("keydown", onKey);
   }, [open, onClose]);
 
@@ -98,6 +93,7 @@ function CollaborateModal({ open, onClose }) {
 
   return (
     <div
+      ref={overlayRef}
       style={{
         position: "fixed",
         inset: 0,
@@ -125,10 +121,8 @@ function CollaborateModal({ open, onClose }) {
           border: "1px solid rgba(255,255,255,0.10)",
           boxShadow: "0 0 0 1px rgba(47,110,255,0.06), 0 24px 60px rgba(0,0,0,0.6)",
           fontFamily: "'JetBrains Mono','Fira Code',ui-monospace,monospace",
-          animation: "fp-in 160ms ease-out",
         }}
       >
-        {/* title bar */}
         <div
           style={{
             display: "flex",
@@ -139,7 +133,16 @@ function CollaborateModal({ open, onClose }) {
           }}
         >
           <div style={{ display: "flex", alignItems: "center", gap: "8px", color: "#6B7280", fontSize: "12px" }}>
-            <span style={{ width: 7, height: 7, borderRadius: "50%", background: "#2F6FFF", display: "inline-block", boxShadow: "0 0 8px #2F6FFF" }} />
+            <span
+              style={{
+                width: 7,
+                height: 7,
+                borderRadius: "50%",
+                background: "#2F6FFF",
+                display: "inline-block",
+                boxShadow: "0 0 8px #2F6FFF",
+              }}
+            />
             new_message.sh
           </div>
           <button
@@ -164,12 +167,30 @@ function CollaborateModal({ open, onClose }) {
           <p style={{ color: "#4B7BFF", fontSize: "12px", letterSpacing: "0.06em", margin: "0 0 4px" }}>
             .CONNECT( )
           </p>
-          <h3 style={{ color: "#F3F4F6", fontFamily: "'Space Grotesk','Inter',sans-serif", fontSize: "22px", fontWeight: 600, margin: "0 0 18px", letterSpacing: "-0.01em" }}>
+          <h3
+            style={{
+              color: "#F3F4F6",
+              fontFamily: "'Space Grotesk','Inter',sans-serif",
+              fontSize: "22px",
+              fontWeight: 600,
+              margin: "0 0 18px",
+              letterSpacing: "-0.01em",
+            }}
+          >
             Let&apos;s build something worth shipping.
           </h3>
 
           {status === "sent" ? (
-            <div style={{ display: "flex", gap: 10, alignItems: "flex-start", padding: "14px", border: "1px solid rgba(74,222,128,0.25)", background: "rgba(74,222,128,0.06)" }}>
+            <div
+              style={{
+                display: "flex",
+                gap: 10,
+                alignItems: "flex-start",
+                padding: "14px",
+                border: "1px solid rgba(74,222,128,0.25)",
+                background: "rgba(74,222,128,0.06)",
+              }}
+            >
               <FaCheckCircle size={18} color="#4ADE80" style={{ flexShrink: 0, marginTop: 1 }} />
               <div>
                 <p style={{ color: "#E5E7EB", fontSize: "13px", margin: 0, fontFamily: "'Inter',sans-serif" }}>
@@ -177,7 +198,16 @@ function CollaborateModal({ open, onClose }) {
                 </p>
                 <button
                   onClick={onClose}
-                  style={{ marginTop: 10, background: "transparent", border: "none", color: "#4B7BFF", fontSize: "12px", cursor: "pointer", padding: 0, fontFamily: "inherit" }}
+                  style={{
+                    marginTop: 10,
+                    background: "transparent",
+                    border: "none",
+                    color: "#4B7BFF",
+                    fontSize: "12px",
+                    cursor: "pointer",
+                    padding: 0,
+                    fontFamily: "inherit",
+                  }}
                 >
                   close ✕
                 </button>
@@ -196,7 +226,17 @@ function CollaborateModal({ open, onClose }) {
               />
 
               {status === "error" && (
-                <div style={{ display: "flex", gap: 8, alignItems: "center", color: "#F87171", fontSize: "12px", marginBottom: "12px", fontFamily: "'Inter',sans-serif" }}>
+                <div
+                  style={{
+                    display: "flex",
+                    gap: 8,
+                    alignItems: "center",
+                    color: "#F87171",
+                    fontSize: "12px",
+                    marginBottom: "12px",
+                    fontFamily: "'Inter',sans-serif",
+                  }}
+                >
                   <FaCircleExclamation size={14} />
                   Something went wrong. Please try again, or email directly.
                 </div>
@@ -270,13 +310,84 @@ function Field({ label, textarea, ...props }) {
   );
 }
 
-export const Footer = ()=>{
-const [modalOpen, setModalOpen] = useState(false);
+export const Footer = () => {
+  const [modalOpen, setModalOpen] = useState(false);
   const time = useTerminalClock();
 
-  return (
+  const footerRef = useRef(null);
+  const labelRef = useRef(null);
+  const headingRef = useRef(null);
+  const ctaRef = useRef(null);
+  const navRef = useRef(null);
+  const socialsRef = useRef(null);
+  const bottomRef = useRef(null);
+
+  useLayoutEffect(() => {
+    const ctx = gsap.context(() => {
+      const tl = gsap.timeline({
+        defaults: { ease: "power3.out" },
+        scrollTrigger: { trigger: footerRef.current, start: "top 85%" },
+      });
+
+      tl.fromTo(labelRef.current, { autoAlpha: 0, y: 14 }, { autoAlpha: 1, y: 0, duration: 0.5 })
+        .fromTo(headingRef.current, { autoAlpha: 0, y: 32 }, { autoAlpha: 1, y: 0, duration: 0.7 }, "-=0.25")
+        .fromTo(
+          ctaRef.current,
+          { autoAlpha: 0, scale: 0.9 },
+          { autoAlpha: 1, scale: 1, duration: 0.5, ease: "back.out(1.7)" },
+          "-=0.4"
+        )
+        .fromTo(
+          navRef.current.children,
+          { autoAlpha: 0, y: 16 },
+          { autoAlpha: 1, y: 0, duration: 0.4, stagger: 0.06 },
+          "-=0.2"
+        )
+        .fromTo(
+          socialsRef.current.children,
+          { autoAlpha: 0, scale: 0.6 },
+          { autoAlpha: 1, scale: 1, duration: 0.4, stagger: 0.06, ease: "back.out(2)" },
+          "-=0.3"
+        )
+        .fromTo(bottomRef.current, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.6 }, "-=0.1");
+
+      ScrollTrigger.refresh();
+    }, footerRef);
+
+    return () => ctx.revert();
+  }, []);
+
+  useEffect(() => {
+    const btn = ctaRef.current;
+    if (!btn) return;
+
+    const xTo = gsap.quickTo(btn, "x", { duration: 0.4, ease: "power3.out" });
+    const yTo = gsap.quickTo(btn, "y", { duration: 0.4, ease: "power3.out" });
+
+    const onMove = (e) => {
+      const rect = btn.getBoundingClientRect();
+      xTo((e.clientX - rect.left - rect.width / 2) * 0.35);
+      yTo((e.clientY - rect.top - rect.height / 2) * 0.35);
+    };
+
+    const onLeave = () => {
+      xTo(0);
+      yTo(0);
+    };
+
+    btn.addEventListener("mousemove", onMove);
+    btn.addEventListener("mouseleave", onLeave);
+
+    return () => {
+      btn.removeEventListener("mousemove", onMove);
+      btn.removeEventListener("mouseleave", onLeave);
+    };
+  }, []);
+
+  return ( <div>
     <footer
-    id="connect"
+      ref={footerRef}
+      id="connect"
       style={{
         background: "#08090A",
         color: "#E5E7EB",
@@ -285,9 +396,8 @@ const [modalOpen, setModalOpen] = useState(false);
       }}
     >
       <style>{`
-        @keyframes fp-in { from { opacity:0; transform: translateY(6px) scale(0.98); } to { opacity:1; transform: translateY(0) scale(1); } }
-        @keyframes fp-spin { to { transform: rotate(360deg); } }
         .fp-spin { animation: fp-spin 0.8s linear infinite; }
+        @keyframes fp-spin { to { transform: rotate(360deg); } }
         .fp-social:hover { background:#2F6FFF !important; border-color:#2F6FFF !important; }
         .fp-social:hover svg { color:#08090A !important; }
         .fp-cta:hover { background:#2F6FFF !important; color:#08090A !important; }
@@ -297,6 +407,7 @@ const [modalOpen, setModalOpen] = useState(false);
 
       <div style={{ maxWidth: "1100px", margin: "0 auto", padding: "96px 32px 40px" }}>
         <p
+          ref={labelRef}
           style={{
             fontFamily: "'ancizar','Fira Code',ui-monospace,monospace",
             fontSize: "12px",
@@ -320,6 +431,7 @@ const [modalOpen, setModalOpen] = useState(false);
           }}
         >
           <h2
+            ref={headingRef}
             style={{
               fontFamily: "'Space Grotesk','Inter',sans-serif",
               fontWeight: 600,
@@ -336,6 +448,7 @@ const [modalOpen, setModalOpen] = useState(false);
           </h2>
 
           <button
+            ref={ctaRef}
             className="fp-cta"
             onClick={() => setModalOpen(true)}
             style={{
@@ -350,7 +463,7 @@ const [modalOpen, setModalOpen] = useState(false);
               fontSize: "13px",
               letterSpacing: "0.03em",
               cursor: "pointer",
-              transition: "all 150ms ease",
+              transition: "background 150ms ease, color 150ms ease",
               whiteSpace: "nowrap",
             }}
           >
@@ -368,9 +481,9 @@ const [modalOpen, setModalOpen] = useState(false);
             borderBottom: "1px solid rgba(255,255,255,0.08)",
           }}
         >
-          <nav style={{ display: "flex", gap: "24px", flexWrap: "wrap" }}>
+          <nav ref={navRef} style={{ display: "flex", gap: "24px", flexWrap: "wrap" }}>
             {["ABOUT", "WORK", "CONNECT"].map((item) => (
-              <a
+              
                 key={item}
                 href={`#${item.toLowerCase()}`}
                 className="fp-link"
@@ -388,9 +501,9 @@ const [modalOpen, setModalOpen] = useState(false);
             ))}
           </nav>
 
-          <div style={{ display: "flex", gap: "10px" }}>
+          <div ref={socialsRef} style={{ display: "flex", gap: "10px" }}>
             {SOCIALS.map(({ label, href, Icon }) => (
-              <a
+              
                 key={label}
                 href={href}
                 target="_blank"
@@ -414,6 +527,7 @@ const [modalOpen, setModalOpen] = useState(false);
         </div>
 
         <div
+          ref={bottomRef}
           style={{
             display: "flex",
             flexWrap: "wrap",
@@ -438,5 +552,6 @@ const [modalOpen, setModalOpen] = useState(false);
 
       <CollaborateModal open={modalOpen} onClose={() => setModalOpen(false)} />
     </footer>
+    </div>
   );
-}
+};
