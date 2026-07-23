@@ -209,7 +209,7 @@ export const FeaturedProjects = () => {
   return (
     <section
       ref={sectionRef}
-      id="featured-projects"
+      id="work"
       aria-label="Featured Projects Portfolio"
       className="relative w-full bg-[#050505]  text-[#f5f5f7] mt-20"
     >

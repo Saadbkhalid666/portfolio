@@ -276,6 +276,7 @@ const [modalOpen, setModalOpen] = useState(false);
 
   return (
     <footer
+    id="connect"
       style={{
         background: "#08090A",
         color: "#E5E7EB",
