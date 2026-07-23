@@ -1,7 +1,17 @@
+"use client";
+
 import Image from "next/image";
 import myimg from "../assets/myimg.jpg";
+import { useLayoutEffect, useRef } from "react";
+import { gsap, ScrollTrigger } from "../lib/gsap";
 
 export const About = () => {
+  const sectionRef = useRef(null);
+  const labelRef = useRef(null);
+  const headingRef = useRef(null);
+  const textRef = useRef(null);
+  const imageRef = useRef(null);
+
   const schemaData = {
     "@context": "https://schema.org",
     "@type": "Person",
@@ -20,11 +30,45 @@ export const About = () => {
     ]
   };
 
+  useLayoutEffect(() => {
+    const ctx = gsap.context(() => {
+      const tl = gsap.timeline({
+        defaults: { ease: "power3.out" },
+        scrollTrigger: { trigger: sectionRef.current, start: "top 75%" },
+      });
+
+      tl.fromTo(labelRef.current, { autoAlpha: 0, y: 12 }, { autoAlpha: 1, y: 0, duration: 0.5 })
+        .fromTo(
+          headingRef.current.querySelectorAll(".about-line"),
+          { autoAlpha: 0, y: 34 },
+          { autoAlpha: 1, y: 0, duration: 0.7, stagger: 0.1 },
+          "-=0.25"
+        )
+        .fromTo(
+          textRef.current.children,
+          { autoAlpha: 0, y: 20 },
+          { autoAlpha: 1, y: 0, duration: 0.6, stagger: 0.1 },
+          "-=0.35"
+        )
+        .fromTo(
+          imageRef.current,
+          { autoAlpha: 0, scale: 0.9, y: 26 },
+          { autoAlpha: 1, scale: 1, y: 0, duration: 0.8, ease: "power4.out" },
+          "-=0.6"
+        );
+
+      ScrollTrigger.refresh();
+    }, sectionRef);
+
+    return () => ctx.revert();
+  }, []);
+
   return (
-    <section 
-      id="about" 
-      aria-labelledby="about-heading" 
-      className="relative mt-20 lg:mt-32 px-6 py-12 overflow-hidden   text-[#f5f5f7]"
+    <section
+      ref={sectionRef}
+      id="about"
+      aria-labelledby="about-heading"
+      className="relative mt-20 lg:mt-32 px-6 py-12 overflow-hidden text-[#f5f5f7]"
     >
       <script
         type="application/ld+json"
@@ -32,21 +76,21 @@ export const About = () => {
       />
 
       <div className="container mx-auto max-w-7xl relative z-10">
-            <p className="font-instrument text-[#6e6e73] text-lg ">02 - About</p>
+        <p ref={labelRef} className="font-instrument text-[#6e6e73] text-lg">
+          02 - About
+        </p>
         <div className="flex flex-col-reverse items-center gap-12 lg:flex-row lg:justify-between lg:gap-16">
-          
           <article className="max-w-2xl text-center lg:text-left">
-            <h2 
+            <h2
+              ref={headingRef}
               id="about-heading"
-              className="font-lily text-4xl sm:text-5xl lg:text-6xl text-white font-bold leading-tight tracking-tight"
+              className="font-lily text-4xl sm:text-5xl lg:text-6xl text-white font-bold leading-tight tracking-tight overflow-hidden"
             >
-              Transforming <br />
-              <span className=" ">
-                Ideas Daily;
-              </span>
+              <span className="about-line block">Transforming</span>
+              <span className="about-line block">Ideas Daily;</span>
             </h2>
 
-            <div className="mt-8 text-base sm:text-lg leading-relaxed text-[#f5f5f7] space-y-6">
+            <div ref={textRef} className="mt-8 text-base sm:text-lg leading-relaxed text-[#f5f5f7] space-y-6">
               <p>
                 I&apos;m a{" "}
                 <span className="inline-flex items-center px-2 py-0.5 rounded-md border border-zinc-700 bg-zinc-800 text-white font-semibold transition-all duration-300 hover:border-zinc-500">
@@ -77,18 +121,17 @@ export const About = () => {
             </div>
           </article>
 
-          <div className="relative flex justify-center lg:justify-end group">
+          <div ref={imageRef} className="relative flex justify-center lg:justify-end group">
             <div className="relative rounded-2xl overflow-hidden border border-zinc-800 bg-zinc-900/60 p-2 transition-colors duration-300 group-hover:border-zinc-600">
               <Image
                 src={myimg}
                 alt="Saad Bin Khalid - Full-Stack Engineer"
-                className="h-auto w-64 sm:w-80 lg:w-80 rounded-xl object-cover   transition-all duration-500 group-hover:grayscale-0 group-hover:scale-[1.01]"
+                className="h-auto w-64 sm:w-80 lg:w-80 rounded-xl object-cover transition-all duration-500 group-hover:grayscale-0 group-hover:scale-[1.01]"
                 priority
                 quality={90}
               />
             </div>
           </div>
-
         </div>
       </div>
     </section>
