@@ -218,7 +218,7 @@ export const FeaturedProjects = () => {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaData) }}
       />
 
-      <div className="relative h-screen w-full flex flex-col justify-between pt-4 pb-12 sm:pb-8">
+      <div id="work" className="relative h-screen w-full flex flex-col justify-between pt-4 pb-12 sm:pb-8">
 
         <div className="relative w-full flex-1 min-h-0 overflow-hidden">
         
