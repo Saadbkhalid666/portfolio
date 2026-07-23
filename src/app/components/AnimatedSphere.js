@@ -4,13 +4,11 @@ import React, { useRef } from "react";
 import { useFrame } from "@react-three/fiber";
 import * as THREE from "three";
 
-// --- CUSTOM SHADER DEFINITION ---
-// We write custom GLSL code to dynamically morph the sphere shape using 3D Noise.
 const HologramShaderMaterial = {
   uniforms: {
     uTime: { value: 0 },
-    uColor: { value: new THREE.Color("#6e6e73") }, // Teal color
-    uGlowPower: { value: 4.0 },                    // Edge glow intensity
+    uColor: { value: new THREE.Color("#656565") },  
+    uGlowPower: { value: 9.0 },                    // Edge glow intensity
   },
   
   // Vertex Shader: Displaces vertices outwards based on Simplex Noise + Time

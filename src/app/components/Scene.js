@@ -7,7 +7,6 @@ export default function Scene() {
   return (
     <div className="  w-full h-full ">
       <Canvas camera={{ position: [0, 0, 5], fov: 60 }}>
-        {/* Soft atmospheric lighting */}
         <ambientLight intensity={1.5} />
         <pointLight position={[10, 10, 10]} intensity={2} />
         

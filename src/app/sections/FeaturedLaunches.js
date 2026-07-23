@@ -211,7 +211,7 @@ export const FeaturedProjects = () => {
       ref={sectionRef}
       id="featured-projects"
       aria-label="Featured Projects Portfolio"
-      className="relative w-full bg-[#050505] text-[#f5f5f7]"
+      className="relative w-full bg-[#050505]  text-[#f5f5f7] mt-20"
     >
       <script
         type="application/ld+json"
@@ -219,17 +219,17 @@ export const FeaturedProjects = () => {
       />
 
       <div className="relative h-screen w-full flex flex-col justify-between pt-4 pb-12 sm:pb-8">
+
+        <div className="relative w-full flex-1 min-h-0 overflow-hidden">
         
-        <header className="z-20 px-4 text-center shrink-0">
-          <p className="font-mono text-zinc-400 uppercase tracking-[0.25em] text-xs">
+        <header className="mt-20 z-20 px-4 text-center shrink-0">
+          <p className="font-instrument text-zinc-400 uppercase tracking-[0.25em] text-xs">
             03 - Production Logs
           </p>
-          <h2 className="mt-1 text-2xl sm:text-4xl font-bold tracking-tight">
+          <h2 className="mt-1 font-ancizar text-2xl sm:text-4xl font-bold tracking-tight">
             Selected Projects
           </h2>
         </header>
-
-        <div className="relative w-full flex-1 min-h-0 overflow-hidden">
           <div
             ref={trackRef}
             className="flex flex-row flex-nowrap h-full w-max will-change-transform"
@@ -265,15 +265,15 @@ export const FeaturedProjects = () => {
                   </div>
 
                   <div className="lg:col-span-5 flex flex-col justify-center text-left">
-                    <span className="project-category font-mono text-[10px] sm:text-xs uppercase tracking-[0.2em] text-zinc-400">
+                    <span className="font-instrument project-category   text-[10px] sm:text-xs uppercase tracking-[0.2em] text-zinc-400">
                       {project.category}
                     </span>
 
-                    <h3 className="project-title mt-1 sm:mt-3 font-bold text-xl sm:text-4xl lg:text-5xl tracking-tight text-white leading-tight">
+                    <h3 className="project-title mt-1 sm:mt-3 font-ancizar font-bold text-xl sm:text-4xl lg:text-5xl tracking-tight text-white leading-tight">
                       {project.title}
                     </h3>
 
-                    <p className="project-desc mt-1.5 sm:mt-4 max-w-xl text-xs sm:text-base leading-relaxed text-zinc-400 font-normal line-clamp-2 sm:line-clamp-4">
+                    <p className="project-desc mt-1.5 sm:mt-4 max-w-xl font-inter text-xs sm:text-base leading-relaxed text-zinc-400 font-normal line-clamp-2 sm:line-clamp-4">
                       {project.description}
                     </p>
 
