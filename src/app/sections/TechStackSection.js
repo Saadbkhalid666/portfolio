@@ -36,7 +36,7 @@ const SKILLS_DATA = [
   {
     name: "TypeScript",
     category: "Programming Language",
-    proficiency: 85,
+    proficiency: 70,
     description: "Type-safe application architecture, complex interfaces, and scalable codebases.",
     icon: SiTypescript,
     iconColor: "#3178C6",

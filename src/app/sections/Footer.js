@@ -43,15 +43,15 @@ function CollaborateModal({ open, onClose }) {
   const [status, setStatus] = useState("idle");
   const overlayRef = useRef(null);
   const dialogRef = useRef(null);
-  
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+
   const handleClose = useCallback(() => {
     const tl = gsap.timeline({
       onComplete: onClose,
     });
     tl.to(dialogRef.current, { autoAlpha: 0, y: 15, scale: 0.95, duration: 0.2, ease: "power2.in" })
       .to(overlayRef.current, { autoAlpha: 0, duration: 0.2 }, "-=0.1");
-  });
+  }, [onClose]);
+
   useEffect(() => {
     if (!open) return;
     const onKey = (e) => e.key === "Escape" && handleClose();
@@ -68,7 +68,6 @@ function CollaborateModal({ open, onClose }) {
 
     return () => window.removeEventListener("keydown", onKey);
   }, [handleClose, open]);
-
 
   if (!open) return null;
 
@@ -104,17 +103,7 @@ function CollaborateModal({ open, onClose }) {
   return (
     <div
       ref={overlayRef}
-      style={{
-        position: "fixed",
-        inset: 0,
-        zIndex: 100,
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        padding: "24px",
-        background: "rgba(5,6,8,0.75)",
-        backdropFilter: "blur(6px)",
-      }}
+      className="fixed inset-0 z-50 flex items-center justify-center p-6 bg-[#050608]/75 backdrop-blur-md"
       onMouseDown={(e) => {
         if (e.target === e.currentTarget) handleClose();
       }}
@@ -124,100 +113,40 @@ function CollaborateModal({ open, onClose }) {
         role="dialog"
         aria-modal="true"
         aria-label="Start a collaboration"
-        style={{
-          width: "100%",
-          maxWidth: "480px",
-          background: "#0A0B0D",
-          border: "1px solid rgba(255,255,255,0.10)",
-          boxShadow: "0 0 0 1px rgba(47,110,255,0.06), 0 24px 60px rgba(0,0,0,0.6)",
-          fontFamily: "'JetBrains Mono','Fira Code',ui-monospace,monospace",
-        }}
+        className="w-full max-w-md bg-[#0A0B0D] border border-white/10 shadow-[0_0_0_1px_rgba(47,110,255,0.06),0_24px_60px_rgba(0,0,0,0.6)] font-mono"
       >
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
-            padding: "12px 16px",
-            borderBottom: "1px solid rgba(255,255,255,0.10)",
-          }}
-        >
-          <div style={{ display: "flex", alignItems: "center", gap: "8px", color: "#6B7280", fontSize: "12px" }}>
-            <span
-              style={{
-                width: 7,
-                height: 7,
-                borderRadius: "50%",
-                background: "#2F6FFF",
-                display: "inline-block",
-                boxShadow: "0 0 8px #2F6FFF",
-              }}
-            />
+        <div className="flex items-center justify-between px-4 py-3 border-b border-white/10">
+          <div className="flex items-center gap-2 text-xs text-zinc-500">
+            <span className="w-1.75 h-1.75 rounded-full bg-[#2F6FFF] inline-block shadow-[0_0_8px_#2F6FFF]" />
             new_message.sh
           </div>
           <button
             onClick={handleClose}
             aria-label="Close"
-            style={{
-              background: "transparent",
-              border: "1px solid rgba(255,255,255,0.12)",
-              color: "#9CA3AF",
-              width: 26,
-              height: 26,
-              display: "grid",
-              placeItems: "center",
-              cursor: "pointer",
-            }}
+            className="bg-transparent border border-white/12 text-zinc-400 w-6.5 h-6.5 grid place-items-center cursor-pointer hover:text-white hover:border-white/20 transition-colors"
           >
             <FaXmark size={14} />
           </button>
         </div>
 
-        <div style={{ padding: "20px" }}>
-          <p style={{ color: "#4B7BFF", fontSize: "12px", letterSpacing: "0.06em", margin: "0 0 4px" }}>
+        <div className="p-5">
+          <p className="text-[#4B7BFF] text-xs tracking-wider mb-1">
             .CONNECT( )
           </p>
-          <h3
-            style={{
-              color: "#F3F4F6",
-              fontFamily: "'Space Grotesk','Inter',sans-serif",
-              fontSize: "22px",
-              fontWeight: 600,
-              margin: "0 0 18px",
-              letterSpacing: "-0.01em",
-            }}
-          >
+          <h3 className="text-zinc-100 font-sans text-6xl font-semibold mb-4.5 tracking-wide">
             Let&apos;s build something worth shipping.
           </h3>
 
           {status === "sent" ? (
-            <div
-              style={{
-                display: "flex",
-                gap: 10,
-                alignItems: "flex-start",
-                padding: "14px",
-                border: "1px solid rgba(74,222,128,0.25)",
-                background: "rgba(74,222,128,0.06)",
-              }}
-            >
-              <FaCheckCircle size={18} color="#4ADE80" style={{ flexShrink: 0, marginTop: 1 }} />
+            <div className="flex gap-2.5 items-start p-3.5 border border-green-400/25 bg-green-400/6">
+              <FaCheckCircle size={18} className="text-green-400 shrink-0 mt-0.5" />
               <div>
-                <p style={{ color: "#E5E7EB", fontSize: "13px", margin: 0, fontFamily: "'Inter',sans-serif" }}>
+                <p className="text-zinc-200 text-xs font-sans">
                   Message sent. I&apos;ll get back to you shortly.
                 </p>
                 <button
                   onClick={handleClose}
-                  style={{
-                    marginTop: 10,
-                    background: "transparent",
-                    border: "none",
-                    color: "#4B7BFF",
-                    fontSize: "12px",
-                    cursor: "pointer",
-                    padding: 0,
-                    fontFamily: "inherit",
-                  }}
+                  className="mt-2.5 bg-transparent border-none text-[#4B7BFF] text-xs cursor-pointer p-0 font-inherit hover:underline"
                 >
                   close ✕
                 </button>
@@ -236,17 +165,7 @@ function CollaborateModal({ open, onClose }) {
               />
 
               {status === "error" && (
-                <div
-                  style={{
-                    display: "flex",
-                    gap: 8,
-                    alignItems: "center",
-                    color: "#F87171",
-                    fontSize: "12px",
-                    marginBottom: "12px",
-                    fontFamily: "'Inter',sans-serif",
-                  }}
-                >
+                <div className="flex gap-2 items-center text-red-400 text-xs mb-3 font-sans">
                   <FaCircleExclamation size={14} />
                   Something went wrong. Please try again, or email directly.
                 </div>
@@ -255,28 +174,15 @@ function CollaborateModal({ open, onClose }) {
               <button
                 type="submit"
                 disabled={status === "sending"}
-                style={{
-                  width: "100%",
-                  marginTop: "4px",
-                  padding: "12px 16px",
-                  background: status === "sending" ? "rgba(47,110,255,0.4)" : "#2F6FFF",
-                  border: "none",
-                  color: "#0A0B0D",
-                  fontWeight: 600,
-                  fontSize: "13px",
-                  letterSpacing: "0.02em",
-                  cursor: status === "sending" ? "not-allowed" : "pointer",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  gap: "8px",
-                  fontFamily: "'Inter',sans-serif",
-                  transition: "background 150ms ease",
-                }}
+                className={`w-full mt-1 p-3 border-none font-semibold text-xs tracking-wide flex items-center justify-center gap-2 font-sans transition-colors duration-150 ${
+                  status === "sending"
+                    ? "bg-[#f5f5f7]/40 text-[#0A0B0D] cursor-not-allowed"
+                    : "bg-[#6e6e73] text-[#f5f5f7] hover:bg-[#6e6e73] cursor-pointer"
+                }`}
               >
                 {status === "sending" ? (
                   <>
-                    <MdOutlineHourglassTop size={14} className="fp-spin" /> sending...
+                    <MdOutlineHourglassTop size={14} className="animate-spin" /> sending...
                   </>
                 ) : (
                   <>send_message()</>
@@ -293,28 +199,15 @@ function CollaborateModal({ open, onClose }) {
 function Field({ label, textarea, ...props }) {
   const Comp = textarea ? "textarea" : "input";
   return (
-    <label style={{ display: "block", marginBottom: "14px" }}>
-      <span style={{ display: "block", fontSize: "11px", color: "#6B7280", marginBottom: "6px", letterSpacing: "0.03em" }}>
+    <label className="block mb-3.5">
+      <span className="block text-[11px] text-zinc-500 mb-1.5 tracking-wide">
         {label}
       </span>
       <Comp
         required
         rows={textarea ? 4 : undefined}
         {...props}
-        style={{
-          width: "100%",
-          background: "#0F1012",
-          border: "1px solid rgba(255,255,255,0.12)",
-          color: "#E5E7EB",
-          padding: "10px 12px",
-          fontSize: "13px",
-          fontFamily: "'Inter',sans-serif",
-          outline: "none",
-          resize: textarea ? "vertical" : undefined,
-          boxSizing: "border-box",
-        }}
-        onFocus={(e) => (e.target.style.borderColor = "#2F6FFF")}
-        onBlur={(e) => (e.target.style.borderColor = "rgba(255,255,255,0.12)")}
+        className="w-full bg-[#0F1012] border border-white/12 text-zinc-200 px-3 py-2.5 text-xs font-sans outline-none focus:border-[#2F6FFF] transition-colors duration-150 box-border resize-y"
       />
     </label>
   );
@@ -365,7 +258,7 @@ export const Footer = () => {
       const navLinks = Array.from(navRef.current.children);
       navLinks.forEach((link) => {
         const xTo = gsap.quickTo(link, "x", { duration: 0.3, ease: "power2.out" });
-        
+
         link.addEventListener("mouseenter", () => {
           gsap.to(link, { color: "#2F6FFF", duration: 0.2 });
           xTo(4);
@@ -380,7 +273,7 @@ export const Footer = () => {
       const socialIcons = Array.from(socialsRef.current.children);
       socialIcons.forEach((icon) => {
         const yTo = gsap.quickTo(icon, "y", { duration: 0.3, ease: "power2.out" });
-        
+
         icon.addEventListener("mouseenter", () => {
           yTo(-4);
           gsap.to(icon, { scale: 1.1, duration: 0.2, ease: "power2.out" });
@@ -439,58 +332,20 @@ export const Footer = () => {
       <footer
         ref={footerRef}
         id="connect"
-        style={{
-          background: "#08090A",
-          color: "#E5E7EB",
-          borderTop: "1px solid rgba(255,255,255,0.08)",
-          fontFamily: "'Inter',sans-serif",
-        }}
+        className="bg-[#08090A] text-zinc-200 border-t border-white/8 font-sans"
       >
-        <style>{`
-          .fp-spin { animation: fp-spin 0.8s linear infinite; }
-          @keyframes fp-spin { to { transform: rotate(360deg); } }
-          .fp-social:hover { background:#2F6FFF !important; border-color:#2F6FFF !important; }
-          .fp-social:hover svg { color:#08090A !important; }
-          .fp-cta:hover { background:#2F6FFF !important; color:#08090A !important; }
-          .fp-cta:hover svg { color:#08090A !important; }
-        `}</style>
-
-        <div style={{ maxWidth: "1100px", margin: "0 auto", padding: "96px 32px 40px" }}>
+        <div className="max-w-6xl mx-auto px-8 pt-24 pb-10">
           <p
             ref={labelRef}
-            style={{
-              fontFamily: "'ancizar','Fira Code',ui-monospace,monospace",
-              fontSize: "12px",
-              letterSpacing: "0.08em",
-              color: "#4B7BFF",
-              margin: "0 0 20px",
-            }}
+            className="text-xs tracking-wider text-[#f5f5f7] mb-5 font-instrument"
           >
-            06 — GET IN TOUCH
+            05 — GET IN TOUCH
           </p>
 
-          <div
-            style={{
-              display: "flex",
-              flexWrap: "wrap",
-              alignItems: "flex-end",
-              justifyContent: "space-between",
-              gap: "32px",
-              paddingBottom: "56px",
-              borderBottom: "1px solid rgba(255,255,255,0.08)",
-            }}
-          >
+          <div className="flex flex-wrap items-end justify-between gap-8 pb-14 border-b border-white/8">
             <h2
               ref={headingRef}
-              style={{
-                fontFamily: "'Space Grotesk','Inter',sans-serif",
-                fontWeight: 600,
-                fontSize: "clamp(28px, 5vw, 52px)",
-                lineHeight: 1.08,
-                letterSpacing: "-0.02em",
-                margin: 0,
-                maxWidth: "620px",
-              }}
+              className="font-sans font-semibold text-3xl sm:text-4xl md:text-5xl lg:text-[52px] leading-[1.08] tracking-wide max-w-2xl"
             >
               Let&apos;s build something
               <br />
@@ -499,59 +354,29 @@ export const Footer = () => {
 
             <button
               ref={ctaRef}
-              className="fp-cta"
               onClick={() => setModalOpen(true)}
-              style={{
-                display: "inline-flex",
-                alignItems: "center",
-                gap: "10px",
-                padding: "16px 26px",
-                background: "transparent",
-                border: "1px solid #2F6FFF",
-                color: "#2F6FFF",
-                fontFamily: "'JetBrains Mono','Fira Code',ui-monospace,monospace",
-                fontSize: "13px",
-                letterSpacing: "0.03em",
-                cursor: "pointer",
-                transition: "background 150ms ease, color 150ms ease",
-                whiteSpace: "nowrap",
-              }}
+              className="inline-flex items-center gap-2.5 px-6.5 py-4 bg-transparent border border-[#6e6e73] text-[#6e6e73] font-mono text-xs tracking-wide cursor-pointer whitespace-nowrap hover:bg-[#6e6e73] hover:text-[#f5f5f7] transition-colors duration-150 group"
             >
-              Let&apos;s collaborate <FaArrowUpRightFromSquare size={16} />
+              Let&apos;s collaborate{" "}
+              <FaArrowUpRightFromSquare size={16} className="text-[#6e6e73] group-hover:text-[#08090A] transition-colors duration-150" />
             </button>
           </div>
 
-          <div
-            style={{
-              display: "flex",
-              flexWrap: "wrap",
-              gap: "32px",
-              justifyContent: "space-between",
-              padding: "36px 0",
-              borderBottom: "1px solid rgba(255,255,255,0.08)",
-            }}
-          >
-            <nav ref={navRef} style={{ display: "flex", gap: "24px", flexWrap: "wrap" }}>
+          <div className="flex flex-wrap gap-8 justify-between py-9 border-b border-white/8">
+            <nav ref={navRef} className="flex gap-6 flex-wrap">
               {["ABOUT", "WORK", "CONNECT"].map((item) => (
                 <a
                   key={item}
                   href={`#${item.toLowerCase()}`}
                   onClick={(e) => handleNavClick(e, item.toLowerCase())}
-                  style={{
-                    color: "#9CA3AF",
-                    fontFamily: "'JetBrains Mono','Fira Code',ui-monospace,monospace",
-                    fontSize: "13px",
-                    textDecoration: "none",
-                    letterSpacing: "0.02em",
-                    display: "inline-block",
-                  }}
+                  className="text-zinc-400 font-mono text-xs no-underline tracking-wide inline-block"
                 >
                   .{item}()
                 </a>
               ))}
             </nav>
 
-            <div ref={socialsRef} style={{ display: "flex", gap: "10px" }}>
+            <div ref={socialsRef} className="flex gap-2.5">
               {SOCIALS.map(({ label, href, Icon }) => (
                 <a
                   key={label}
@@ -559,18 +384,9 @@ export const Footer = () => {
                   target="_blank"
                   rel="noreferrer"
                   aria-label={label}
-                  className="fp-social"
-                  style={{
-                    width: "38px",
-                    height: "38px",
-                    display: "grid",
-                    placeItems: "center",
-                    border: "1px solid rgba(255,255,255,0.14)",
-                    color: "#9CA3AF",
-                    transition: "border-color 150ms ease, background 150ms ease",
-                  }}
+                  className="w-9.5 h-9.5 grid place-items-center border border-white/14 text-zinc-400 hover:bg-zinc-600   hover:text-[#08090A] transition-all duration-150 group"
                 >
-                  <Icon size={16} />
+                  <Icon size={16} className="group-hover:text-[#08090A] transition-colors duration-150" />
                 </a>
               ))}
             </div>
@@ -578,23 +394,13 @@ export const Footer = () => {
 
           <div
             ref={bottomRef}
-            style={{
-              display: "flex",
-              flexWrap: "wrap",
-              gap: "8px",
-              justifyContent: "space-between",
-              alignItems: "center",
-              paddingTop: "24px",
-              fontFamily: "'JetBrains Mono','Fira Code',ui-monospace,monospace",
-              fontSize: "12px",
-              color: "#4B5563",
-            }}
+            className="flex flex-wrap gap-2 justify-between items-center pt-6 font-mono text-xs text-zinc-600"
           >
-            <p style={{ margin: 0 }}>
+            <p className="m-0">
               saad@fullstack:~$ status --available
-              <span style={{ color: "#4ADE80" }}> ● online</span>
+              <span className="text-green-400"> ● online</span>
             </p>
-            <p style={{ margin: 0 }}>
+            <p className="m-0">
               © {new Date().getFullYear()} Saad Bin Khalid — {time}
             </p>
           </div>
