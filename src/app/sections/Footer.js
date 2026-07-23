@@ -1,6 +1,12 @@
 "use client";
 
-import React, { useState, useEffect, useLayoutEffect, useRef, useCallback } from "react";
+import React, {
+  useState,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useCallback,
+} from "react";
 import { FaCheckCircle } from "react-icons/fa";
 import {
   FaLinkedinIn,
@@ -12,16 +18,32 @@ import {
 } from "react-icons/fa6";
 import { MdOutlineMail, MdOutlineHourglassTop } from "react-icons/md";
 import { gsap, ScrollTrigger } from "../lib/gsap";
+const EMAILJS_SERVICE_ID = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID;
 
-const EMAILJS_SERVICE_ID = "YOUR_SERVICE_ID";
-const EMAILJS_TEMPLATE_ID = "YOUR_TEMPLATE_ID";
-const EMAILJS_PUBLIC_KEY = "YOUR_PUBLIC_KEY";
+const EMAILJS_TEMPLATE_ID = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID;
 
+const EMAILJS_PUBLIC_KEY = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY;
 const SOCIALS = [
-  { label: "GitHub", href: "https://github.com/Saadbkhalid666", Icon: FaGithub },
-  { label: "LinkedIn", href: "https://linkedin.com/in/saadbinkhalid666", Icon: FaLinkedinIn },
-  { label: "Instagram", href: "https://instagram.com/sagit_saad", Icon: FaInstagram },
-  { label: "Email", href: "mailto:saadbkhalid666@gmail.com", Icon: MdOutlineMail },
+  {
+    label: "GitHub",
+    href: "https://github.com/Saadbkhalid666",
+    Icon: FaGithub,
+  },
+  {
+    label: "LinkedIn",
+    href: "https://linkedin.com/in/saadbinkhalid666",
+    Icon: FaLinkedinIn,
+  },
+  {
+    label: "Instagram",
+    href: "https://instagram.com/sagit_saad",
+    Icon: FaInstagram,
+  },
+  {
+    label: "Email",
+    href: "mailto:saadbkhalid666@gmail.com",
+    Icon: MdOutlineMail,
+  },
 ];
 
 function useTerminalClock() {
@@ -48,8 +70,13 @@ function CollaborateModal({ open, onClose }) {
     const tl = gsap.timeline({
       onComplete: onClose,
     });
-    tl.to(dialogRef.current, { autoAlpha: 0, y: 15, scale: 0.95, duration: 0.2, ease: "power2.in" })
-      .to(overlayRef.current, { autoAlpha: 0, duration: 0.2 }, "-=0.1");
+    tl.to(dialogRef.current, {
+      autoAlpha: 0,
+      y: 15,
+      scale: 0.95,
+      duration: 0.2,
+      ease: "power2.in",
+    }).to(overlayRef.current, { autoAlpha: 0, duration: 0.2 }, "-=0.1");
   }, [onClose]);
 
   useEffect(() => {
@@ -58,20 +85,24 @@ function CollaborateModal({ open, onClose }) {
     window.addEventListener("keydown", onKey);
 
     const tl = gsap.timeline();
-    tl.fromTo(overlayRef.current, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.25, ease: "power2.out" })
-      .fromTo(
-        dialogRef.current,
-        { autoAlpha: 0, y: 26, scale: 0.95 },
-        { autoAlpha: 1, y: 0, scale: 1, duration: 0.45, ease: "back.out(1.4)" },
-        "-=0.15"
-      );
+    tl.fromTo(
+      overlayRef.current,
+      { autoAlpha: 0 },
+      { autoAlpha: 1, duration: 0.25, ease: "power2.out" },
+    ).fromTo(
+      dialogRef.current,
+      { autoAlpha: 0, y: 26, scale: 0.95 },
+      { autoAlpha: 1, y: 0, scale: 1, duration: 0.45, ease: "back.out(1.4)" },
+      "-=0.15",
+    );
 
     return () => window.removeEventListener("keydown", onKey);
   }, [handleClose, open]);
 
   if (!open) return null;
 
-  const update = (key) => (e) => setForm((f) => ({ ...f, [key]: e.target.value }));
+  const update = (key) => (e) =>
+    setForm((f) => ({ ...f, [key]: e.target.value }));
 
   const submit = async (e) => {
     e.preventDefault();
@@ -91,7 +122,9 @@ function CollaborateModal({ open, onClose }) {
             message: form.message,
           },
         }),
+ 
       });
+      
       if (!res.ok) throw new Error("send failed");
       setStatus("sent");
       setForm({ name: "", email: "", message: "" });
@@ -139,7 +172,10 @@ function CollaborateModal({ open, onClose }) {
 
           {status === "sent" ? (
             <div className="flex gap-2.5 items-start p-3.5 border border-green-400/25 bg-green-400/6">
-              <FaCheckCircle size={18} className="text-green-400 shrink-0 mt-0.5" />
+              <FaCheckCircle
+                size={18}
+                className="text-green-400 shrink-0 mt-0.5"
+              />
               <div>
                 <p className="text-zinc-200 text-xs font-sans">
                   Message sent. I&apos;ll get back to you shortly.
@@ -154,8 +190,19 @@ function CollaborateModal({ open, onClose }) {
             </div>
           ) : (
             <form onSubmit={submit}>
-              <Field label="> name" value={form.name} onChange={update("name")} placeholder="Your name" />
-              <Field label="> email" value={form.email} onChange={update("email")} placeholder="you@company.com" type="email" />
+              <Field
+                label="> name"
+                value={form.name}
+                onChange={update("name")}
+                placeholder="Your name"
+              />
+              <Field
+                label="> email"
+                value={form.email}
+                onChange={update("email")}
+                placeholder="you@company.com"
+                type="email"
+              />
               <Field
                 label="> message"
                 value={form.message}
@@ -182,7 +229,8 @@ function CollaborateModal({ open, onClose }) {
               >
                 {status === "sending" ? (
                   <>
-                    <MdOutlineHourglassTop size={14} className="animate-spin" /> sending...
+                    <MdOutlineHourglassTop size={14} className="animate-spin" />{" "}
+                    sending...
                   </>
                 ) : (
                   <>send_message()</>
@@ -232,32 +280,55 @@ export const Footer = () => {
         scrollTrigger: { trigger: footerRef.current, start: "top 85%" },
       });
 
-      tl.fromTo(labelRef.current, { autoAlpha: 0, y: 14 }, { autoAlpha: 1, y: 0, duration: 0.5 })
-        .fromTo(headingRef.current, { autoAlpha: 0, y: 32 }, { autoAlpha: 1, y: 0, duration: 0.7 }, "-=0.25")
+      tl.fromTo(
+        labelRef.current,
+        { autoAlpha: 0, y: 14 },
+        { autoAlpha: 1, y: 0, duration: 0.5 },
+      )
+        .fromTo(
+          headingRef.current,
+          { autoAlpha: 0, y: 32 },
+          { autoAlpha: 1, y: 0, duration: 0.7 },
+          "-=0.25",
+        )
         .fromTo(
           ctaRef.current,
           { autoAlpha: 0, scale: 0.9 },
           { autoAlpha: 1, scale: 1, duration: 0.5, ease: "back.out(1.7)" },
-          "-=0.4"
+          "-=0.4",
         )
         .fromTo(
           navRef.current.children,
           { autoAlpha: 0, y: 16 },
           { autoAlpha: 1, y: 0, duration: 0.4, stagger: 0.06 },
-          "-=0.2"
+          "-=0.2",
         )
         .fromTo(
           socialsRef.current.children,
           { autoAlpha: 0, scale: 0.6 },
-          { autoAlpha: 1, scale: 1, duration: 0.4, stagger: 0.06, ease: "back.out(2)" },
-          "-=0.3"
+          {
+            autoAlpha: 1,
+            scale: 1,
+            duration: 0.4,
+            stagger: 0.06,
+            ease: "back.out(2)",
+          },
+          "-=0.3",
         )
-        .fromTo(bottomRef.current, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.6 }, "-=0.1");
+        .fromTo(
+          bottomRef.current,
+          { autoAlpha: 0 },
+          { autoAlpha: 1, duration: 0.6 },
+          "-=0.1",
+        );
 
       // Animated links on Hover
       const navLinks = Array.from(navRef.current.children);
       navLinks.forEach((link) => {
-        const xTo = gsap.quickTo(link, "x", { duration: 0.3, ease: "power2.out" });
+        const xTo = gsap.quickTo(link, "x", {
+          duration: 0.3,
+          ease: "power2.out",
+        });
 
         link.addEventListener("mouseenter", () => {
           gsap.to(link, { color: "#2F6FFF", duration: 0.2 });
@@ -272,7 +343,10 @@ export const Footer = () => {
       // Animated Social Icons on Hover
       const socialIcons = Array.from(socialsRef.current.children);
       socialIcons.forEach((icon) => {
-        const yTo = gsap.quickTo(icon, "y", { duration: 0.3, ease: "power2.out" });
+        const yTo = gsap.quickTo(icon, "y", {
+          duration: 0.3,
+          ease: "power2.out",
+        });
 
         icon.addEventListener("mouseenter", () => {
           yTo(-4);
@@ -358,7 +432,10 @@ export const Footer = () => {
               className="inline-flex items-center gap-2.5 px-6.5 py-4 bg-transparent border border-[#6e6e73] text-[#6e6e73] font-mono text-xs tracking-wide cursor-pointer whitespace-nowrap hover:bg-[#6e6e73] hover:text-[#f5f5f7] transition-colors duration-150 group"
             >
               Let&apos;s collaborate{" "}
-              <FaArrowUpRightFromSquare size={16} className="text-[#6e6e73] group-hover:text-[#08090A] transition-colors duration-150" />
+              <FaArrowUpRightFromSquare
+                size={16}
+                className="text-[#6e6e73] group-hover:text-[#08090A] transition-colors duration-150"
+              />
             </button>
           </div>
 
@@ -386,7 +463,10 @@ export const Footer = () => {
                   aria-label={label}
                   className="w-9.5 h-9.5 grid place-items-center border border-white/14 text-zinc-400 hover:bg-zinc-600   hover:text-[#08090A] transition-all duration-150 group"
                 >
-                  <Icon size={16} className="group-hover:text-[#08090A] transition-colors duration-150" />
+                  <Icon
+                    size={16}
+                    className="group-hover:text-[#08090A] transition-colors duration-150"
+                  />
                 </a>
               ))}
             </div>
@@ -406,7 +486,10 @@ export const Footer = () => {
           </div>
         </div>
 
-        <CollaborateModal open={modalOpen} onClose={() => setModalOpen(false)} />
+        <CollaborateModal
+          open={modalOpen}
+          onClose={() => setModalOpen(false)}
+        />
       </footer>
     </div>
   );

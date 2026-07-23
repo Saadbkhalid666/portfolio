@@ -62,8 +62,8 @@ export const CustomCursor = () => {
       aria-hidden="true"
       className="fixed top-0 left-0 pointer-events-none z-9999 hidden md:block invisible"
       style={{
-        width: 26,
-        height: 26,
+        width: 40,
+        height: 40,
         borderRadius: "9999px",
         background: "radial-gradient(circle at 35% 30%, #ffffff, #e8e8ec 60%, #d4d4d8 100%)",
         boxShadow:

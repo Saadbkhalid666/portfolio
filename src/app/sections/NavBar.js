@@ -9,7 +9,7 @@ const NAV_LINKS = [
   { label: "CONNECT", href: "#connect" },
 ];
 
-const ACCENT = "#2F81F7"; // swap to match your design tokens
+const ACCENT = "#f5f5f7"; // swap to match your design tokens
 
 export const NavBar = () => {
   const [isOpen, setIsOpen] = useState(false);
