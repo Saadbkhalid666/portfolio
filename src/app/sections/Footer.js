@@ -483,27 +483,27 @@ export const Footer = () => {
         >
           <nav ref={navRef} style={{ display: "flex", gap: "24px", flexWrap: "wrap" }}>
             {["ABOUT", "WORK", "CONNECT"].map((item) => (
-              
-                key={item}
-                href={`#${item.toLowerCase()}`}
-                className="fp-link"
-                style={{
-                  color: "#9CA3AF",
-                  fontFamily: "'JetBrains Mono','Fira Code',ui-monospace,monospace",
-                  fontSize: "13px",
-                  textDecoration: "none",
-                  letterSpacing: "0.02em",
-                  transition: "color 150ms ease",
-                }}
-              >
-                .{item}( )
-              </a>
-            ))}
+  <a
+    key={item}
+    href={`#${item.toLowerCase()}`}
+    className="fp-link"
+    style={{
+      color: "#9CA3AF",
+      fontFamily: "'JetBrains Mono','Fira Code',ui-monospace,monospace",
+      fontSize: "13px",
+      textDecoration: "none",
+      letterSpacing: "0.02em",
+      transition: "color 150ms ease",
+    }}
+  >
+    .{item}()
+  </a>
+))}
           </nav>
 
           <div ref={socialsRef} style={{ display: "flex", gap: "10px" }}>
             {SOCIALS.map(({ label, href, Icon }) => (
-              
+              <a
                 key={label}
                 href={href}
                 target="_blank"

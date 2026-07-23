@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { gsap } from "../lib/gsap";
+import { gsap } from "../../lib/gsap";
 
 export const CustomCursor = () => {
   const cursorRef = useRef(null);
