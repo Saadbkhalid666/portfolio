@@ -1,29 +1,39 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Github, Linkedin, Instagram, Mail, ArrowUpRight, X, Loader2, CheckCircle2, AlertCircle } from "lucide-react";
+import { FaCheckCircle } from "react-icons/fa";
+import {
+  FaLinkedinIn,
+  FaInstagram,
+  FaGithub,
+  FaArrowUpRightFromSquare,
+  FaXmark,
+  
+  FaCircleExclamation,
+} from "react-icons/fa6";
 
-/**
- * ─────────────────────────────────────────────────────────────
- *  EMAILJS CONFIG — fill these in before shipping
- * ─────────────────────────────────────────────────────────────
- *  1. Create a free account at https://www.emailjs.com
- *  2. Add an Email Service (e.g. Gmail) -> copy the SERVICE_ID
- *  3. Create an Email Template with variables:
- *       {{from_name}}  {{from_email}}  {{message}}
- *     -> copy the TEMPLATE_ID
- *  4. Account > General > copy your Public Key
- *  5. Paste all three below. No npm package needed — this uses
- *     EmailJS's REST endpoint directly via fetch().
- * ─────────────────────────────────────────────────────────────
- */
+import { MdOutlineMail, MdOutlineHourglassTop } from "react-icons/md";
+
+ 
 const EMAILJS_SERVICE_ID = "YOUR_SERVICE_ID";
 const EMAILJS_TEMPLATE_ID = "YOUR_TEMPLATE_ID";
 const EMAILJS_PUBLIC_KEY = "YOUR_PUBLIC_KEY";
 
 const SOCIALS = [
-  { label: "GitHub", href: "https://github.com/Saadbkhalid666", Icon: Github },
-  { label: "LinkedIn", href: "https://linkedin.com/in/saad-bin-khalid", Icon: Linkedin },
-  { label: "Instagram", href: "https://instagram.com/", Icon: Instagram },
-  { label: "Email", href: "mailto:hello@saadbinkhalid.dev", Icon: Mail },
+  { label: "GitHub", href: "https://github.com/Saadbkhalid666", Icon: FaGithub },
+  {
+    label: "LinkedIn",
+    href: "https://linkedin.com/in/saadbinkhalid666",
+    Icon: FaLinkedinIn,
+  },
+  {
+    label: "Instagram",
+    href: "https://instagram.com/sagit_saad",
+    Icon: FaInstagram,
+  },
+  {
+    label: "Email",
+    href: "mailto:saadbkhalid666@gmail.com",
+    Icon: MdOutlineMail,
+  },
 ];
 
 function useTerminalClock() {
@@ -146,7 +156,7 @@ function CollaborateModal({ open, onClose }) {
               cursor: "pointer",
             }}
           >
-            <X size={14} />
+            <FaXmark size={14} />
           </button>
         </div>
 
@@ -155,15 +165,15 @@ function CollaborateModal({ open, onClose }) {
             .CONNECT( )
           </p>
           <h3 style={{ color: "#F3F4F6", fontFamily: "'Space Grotesk','Inter',sans-serif", fontSize: "22px", fontWeight: 600, margin: "0 0 18px", letterSpacing: "-0.01em" }}>
-            Let's build something worth shipping.
+            Let&apos;s build something worth shipping.
           </h3>
 
           {status === "sent" ? (
             <div style={{ display: "flex", gap: 10, alignItems: "flex-start", padding: "14px", border: "1px solid rgba(74,222,128,0.25)", background: "rgba(74,222,128,0.06)" }}>
-              <CheckCircle2 size={18} color="#4ADE80" style={{ flexShrink: 0, marginTop: 1 }} />
+              <FaCheckCircle size={18} color="#4ADE80" style={{ flexShrink: 0, marginTop: 1 }} />
               <div>
                 <p style={{ color: "#E5E7EB", fontSize: "13px", margin: 0, fontFamily: "'Inter',sans-serif" }}>
-                  Message sent. I'll get back to you shortly.
+                  Message sent. I&apos;ll get back to you shortly.
                 </p>
                 <button
                   onClick={onClose}
@@ -187,7 +197,7 @@ function CollaborateModal({ open, onClose }) {
 
               {status === "error" && (
                 <div style={{ display: "flex", gap: 8, alignItems: "center", color: "#F87171", fontSize: "12px", marginBottom: "12px", fontFamily: "'Inter',sans-serif" }}>
-                  <AlertCircle size={14} />
+                  <FaCircleExclamation size={14} />
                   Something went wrong. Please try again, or email directly.
                 </div>
               )}
@@ -216,7 +226,7 @@ function CollaborateModal({ open, onClose }) {
               >
                 {status === "sending" ? (
                   <>
-                    <Loader2 size={14} className="fp-spin" /> sending...
+                    <MdOutlineHourglassTop size={14} className="fp-spin" /> sending...
                   </>
                 ) : (
                   <>send_message()</>
@@ -260,8 +270,8 @@ function Field({ label, textarea, ...props }) {
   );
 }
 
-export default function Footer() {
-  const [modalOpen, setModalOpen] = useState(false);
+export const Footer = ()=>{
+const [modalOpen, setModalOpen] = useState(false);
   const time = useTerminalClock();
 
   return (
@@ -285,20 +295,18 @@ export default function Footer() {
       `}</style>
 
       <div style={{ maxWidth: "1100px", margin: "0 auto", padding: "96px 32px 40px" }}>
-        {/* eyebrow */}
         <p
           style={{
-            fontFamily: "'JetBrains Mono','Fira Code',ui-monospace,monospace",
+            fontFamily: "'ancizar','Fira Code',ui-monospace,monospace",
             fontSize: "12px",
             letterSpacing: "0.08em",
             color: "#4B7BFF",
             margin: "0 0 20px",
           }}
         >
-          06 — GET_IN_TOUCH
+          06 — GET IN TOUCH
         </p>
 
-        {/* big CTA row */}
         <div
           style={{
             display: "flex",
@@ -321,7 +329,7 @@ export default function Footer() {
               maxWidth: "620px",
             }}
           >
-            Let's build something
+            Let&apos;s build something
             <br />
             worth shipping.
           </h2>
@@ -345,11 +353,10 @@ export default function Footer() {
               whiteSpace: "nowrap",
             }}
           >
-            Let's collaborate <ArrowUpRight size={16} />
+            Let&apos;s collaborate <FaArrowUpRightFromSquare size={16} />
           </button>
         </div>
 
-        {/* nav + socials row */}
         <div
           style={{
             display: "flex",
@@ -405,7 +412,6 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* terminal status line */}
         <div
           style={{
             display: "flex",
