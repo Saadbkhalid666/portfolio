@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useLayoutEffect, useRef } from "react";
+import React, { useState, useEffect, useLayoutEffect, useRef, useCallback } from "react";
 import { FaCheckCircle } from "react-icons/fa";
 import {
   FaLinkedinIn,
@@ -43,22 +43,32 @@ function CollaborateModal({ open, onClose }) {
   const [status, setStatus] = useState("idle");
   const overlayRef = useRef(null);
   const dialogRef = useRef(null);
-
+  
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const handleClose = useCallback(() => {
+    const tl = gsap.timeline({
+      onComplete: onClose,
+    });
+    tl.to(dialogRef.current, { autoAlpha: 0, y: 15, scale: 0.95, duration: 0.2, ease: "power2.in" })
+      .to(overlayRef.current, { autoAlpha: 0, duration: 0.2 }, "-=0.1");
+  });
   useEffect(() => {
     if (!open) return;
-    const onKey = (e) => e.key === "Escape" && onClose();
+    const onKey = (e) => e.key === "Escape" && handleClose();
     window.addEventListener("keydown", onKey);
 
     const tl = gsap.timeline();
-    tl.fromTo(overlayRef.current, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.25, ease: "power2.out" }).fromTo(
-      dialogRef.current,
-      { autoAlpha: 0, y: 26, scale: 0.95 },
-      { autoAlpha: 1, y: 0, scale: 1, duration: 0.45, ease: "power4.out" },
-      "-=0.15"
-    );
+    tl.fromTo(overlayRef.current, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.25, ease: "power2.out" })
+      .fromTo(
+        dialogRef.current,
+        { autoAlpha: 0, y: 26, scale: 0.95 },
+        { autoAlpha: 1, y: 0, scale: 1, duration: 0.45, ease: "back.out(1.4)" },
+        "-=0.15"
+      );
 
     return () => window.removeEventListener("keydown", onKey);
-  }, [open, onClose]);
+  }, [handleClose, open]);
+
 
   if (!open) return null;
 
@@ -106,7 +116,7 @@ function CollaborateModal({ open, onClose }) {
         backdropFilter: "blur(6px)",
       }}
       onMouseDown={(e) => {
-        if (e.target === e.currentTarget) onClose();
+        if (e.target === e.currentTarget) handleClose();
       }}
     >
       <div
@@ -146,7 +156,7 @@ function CollaborateModal({ open, onClose }) {
             new_message.sh
           </div>
           <button
-            onClick={onClose}
+            onClick={handleClose}
             aria-label="Close"
             style={{
               background: "transparent",
@@ -197,7 +207,7 @@ function CollaborateModal({ open, onClose }) {
                   Message sent. I&apos;ll get back to you shortly.
                 </p>
                 <button
-                  onClick={onClose}
+                  onClick={handleClose}
                   style={{
                     marginTop: 10,
                     background: "transparent",
@@ -351,12 +361,43 @@ export const Footer = () => {
         )
         .fromTo(bottomRef.current, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.6 }, "-=0.1");
 
+      // Animated links on Hover
+      const navLinks = Array.from(navRef.current.children);
+      navLinks.forEach((link) => {
+        const xTo = gsap.quickTo(link, "x", { duration: 0.3, ease: "power2.out" });
+        
+        link.addEventListener("mouseenter", () => {
+          gsap.to(link, { color: "#2F6FFF", duration: 0.2 });
+          xTo(4);
+        });
+        link.addEventListener("mouseleave", () => {
+          gsap.to(link, { color: "#9CA3AF", duration: 0.2 });
+          xTo(0);
+        });
+      });
+
+      // Animated Social Icons on Hover
+      const socialIcons = Array.from(socialsRef.current.children);
+      socialIcons.forEach((icon) => {
+        const yTo = gsap.quickTo(icon, "y", { duration: 0.3, ease: "power2.out" });
+        
+        icon.addEventListener("mouseenter", () => {
+          yTo(-4);
+          gsap.to(icon, { scale: 1.1, duration: 0.2, ease: "power2.out" });
+        });
+        icon.addEventListener("mouseleave", () => {
+          yTo(0);
+          gsap.to(icon, { scale: 1, duration: 0.2, ease: "power2.out" });
+        });
+      });
+
       ScrollTrigger.refresh();
     }, footerRef);
 
     return () => ctx.revert();
   }, []);
 
+  // CTA Magnetic Effect
   useEffect(() => {
     const btn = ctaRef.current;
     if (!btn) return;
@@ -384,174 +425,183 @@ export const Footer = () => {
     };
   }, []);
 
-  return ( <div>
-    <footer
-      ref={footerRef}
-      id="connect"
-      style={{
-        background: "#08090A",
-        color: "#E5E7EB",
-        borderTop: "1px solid rgba(255,255,255,0.08)",
-        fontFamily: "'Inter',sans-serif",
-      }}
-    >
-      <style>{`
-        .fp-spin { animation: fp-spin 0.8s linear infinite; }
-        @keyframes fp-spin { to { transform: rotate(360deg); } }
-        .fp-social:hover { background:#2F6FFF !important; border-color:#2F6FFF !important; }
-        .fp-social:hover svg { color:#08090A !important; }
-        .fp-cta:hover { background:#2F6FFF !important; color:#08090A !important; }
-        .fp-cta:hover svg { color:#08090A !important; }
-        .fp-link:hover { color:#F3F4F6 !important; }
-      `}</style>
+  // Smooth Scroll Handler
+  const handleNavClick = (e, targetId) => {
+    e.preventDefault();
+    const targetElement = document.getElementById(targetId);
+    if (targetElement) {
+      targetElement.scrollIntoView({ behavior: "smooth" });
+    }
+  };
 
-      <div style={{ maxWidth: "1100px", margin: "0 auto", padding: "96px 32px 40px" }}>
-        <p
-          ref={labelRef}
-          style={{
-            fontFamily: "'ancizar','Fira Code',ui-monospace,monospace",
-            fontSize: "12px",
-            letterSpacing: "0.08em",
-            color: "#4B7BFF",
-            margin: "0 0 20px",
-          }}
-        >
-          06 — GET IN TOUCH
-        </p>
+  return (
+    <div>
+      <footer
+        ref={footerRef}
+        id="connect"
+        style={{
+          background: "#08090A",
+          color: "#E5E7EB",
+          borderTop: "1px solid rgba(255,255,255,0.08)",
+          fontFamily: "'Inter',sans-serif",
+        }}
+      >
+        <style>{`
+          .fp-spin { animation: fp-spin 0.8s linear infinite; }
+          @keyframes fp-spin { to { transform: rotate(360deg); } }
+          .fp-social:hover { background:#2F6FFF !important; border-color:#2F6FFF !important; }
+          .fp-social:hover svg { color:#08090A !important; }
+          .fp-cta:hover { background:#2F6FFF !important; color:#08090A !important; }
+          .fp-cta:hover svg { color:#08090A !important; }
+        `}</style>
 
-        <div
-          style={{
-            display: "flex",
-            flexWrap: "wrap",
-            alignItems: "flex-end",
-            justifyContent: "space-between",
-            gap: "32px",
-            paddingBottom: "56px",
-            borderBottom: "1px solid rgba(255,255,255,0.08)",
-          }}
-        >
-          <h2
-            ref={headingRef}
+        <div style={{ maxWidth: "1100px", margin: "0 auto", padding: "96px 32px 40px" }}>
+          <p
+            ref={labelRef}
             style={{
-              fontFamily: "'Space Grotesk','Inter',sans-serif",
-              fontWeight: 600,
-              fontSize: "clamp(28px, 5vw, 52px)",
-              lineHeight: 1.08,
-              letterSpacing: "-0.02em",
-              margin: 0,
-              maxWidth: "620px",
+              fontFamily: "'ancizar','Fira Code',ui-monospace,monospace",
+              fontSize: "12px",
+              letterSpacing: "0.08em",
+              color: "#4B7BFF",
+              margin: "0 0 20px",
             }}
           >
-            Let&apos;s build something
-            <br />
-            worth shipping.
-          </h2>
+            06 — GET IN TOUCH
+          </p>
 
-          <button
-            ref={ctaRef}
-            className="fp-cta"
-            onClick={() => setModalOpen(true)}
+          <div
             style={{
-              display: "inline-flex",
+              display: "flex",
+              flexWrap: "wrap",
+              alignItems: "flex-end",
+              justifyContent: "space-between",
+              gap: "32px",
+              paddingBottom: "56px",
+              borderBottom: "1px solid rgba(255,255,255,0.08)",
+            }}
+          >
+            <h2
+              ref={headingRef}
+              style={{
+                fontFamily: "'Space Grotesk','Inter',sans-serif",
+                fontWeight: 600,
+                fontSize: "clamp(28px, 5vw, 52px)",
+                lineHeight: 1.08,
+                letterSpacing: "-0.02em",
+                margin: 0,
+                maxWidth: "620px",
+              }}
+            >
+              Let&apos;s build something
+              <br />
+              worth shipping.
+            </h2>
+
+            <button
+              ref={ctaRef}
+              className="fp-cta"
+              onClick={() => setModalOpen(true)}
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                gap: "10px",
+                padding: "16px 26px",
+                background: "transparent",
+                border: "1px solid #2F6FFF",
+                color: "#2F6FFF",
+                fontFamily: "'JetBrains Mono','Fira Code',ui-monospace,monospace",
+                fontSize: "13px",
+                letterSpacing: "0.03em",
+                cursor: "pointer",
+                transition: "background 150ms ease, color 150ms ease",
+                whiteSpace: "nowrap",
+              }}
+            >
+              Let&apos;s collaborate <FaArrowUpRightFromSquare size={16} />
+            </button>
+          </div>
+
+          <div
+            style={{
+              display: "flex",
+              flexWrap: "wrap",
+              gap: "32px",
+              justifyContent: "space-between",
+              padding: "36px 0",
+              borderBottom: "1px solid rgba(255,255,255,0.08)",
+            }}
+          >
+            <nav ref={navRef} style={{ display: "flex", gap: "24px", flexWrap: "wrap" }}>
+              {["ABOUT", "WORK", "CONNECT"].map((item) => (
+                <a
+                  key={item}
+                  href={`#${item.toLowerCase()}`}
+                  onClick={(e) => handleNavClick(e, item.toLowerCase())}
+                  style={{
+                    color: "#9CA3AF",
+                    fontFamily: "'JetBrains Mono','Fira Code',ui-monospace,monospace",
+                    fontSize: "13px",
+                    textDecoration: "none",
+                    letterSpacing: "0.02em",
+                    display: "inline-block",
+                  }}
+                >
+                  .{item}()
+                </a>
+              ))}
+            </nav>
+
+            <div ref={socialsRef} style={{ display: "flex", gap: "10px" }}>
+              {SOCIALS.map(({ label, href, Icon }) => (
+                <a
+                  key={label}
+                  href={href}
+                  target="_blank"
+                  rel="noreferrer"
+                  aria-label={label}
+                  className="fp-social"
+                  style={{
+                    width: "38px",
+                    height: "38px",
+                    display: "grid",
+                    placeItems: "center",
+                    border: "1px solid rgba(255,255,255,0.14)",
+                    color: "#9CA3AF",
+                    transition: "border-color 150ms ease, background 150ms ease",
+                  }}
+                >
+                  <Icon size={16} />
+                </a>
+              ))}
+            </div>
+          </div>
+
+          <div
+            ref={bottomRef}
+            style={{
+              display: "flex",
+              flexWrap: "wrap",
+              gap: "8px",
+              justifyContent: "space-between",
               alignItems: "center",
-              gap: "10px",
-              padding: "16px 26px",
-              background: "transparent",
-              border: "1px solid #2F6FFF",
-              color: "#2F6FFF",
+              paddingTop: "24px",
               fontFamily: "'JetBrains Mono','Fira Code',ui-monospace,monospace",
-              fontSize: "13px",
-              letterSpacing: "0.03em",
-              cursor: "pointer",
-              transition: "background 150ms ease, color 150ms ease",
-              whiteSpace: "nowrap",
+              fontSize: "12px",
+              color: "#4B5563",
             }}
           >
-            Let&apos;s collaborate <FaArrowUpRightFromSquare size={16} />
-          </button>
-        </div>
-
-        <div
-          style={{
-            display: "flex",
-            flexWrap: "wrap",
-            gap: "32px",
-            justifyContent: "space-between",
-            padding: "36px 0",
-            borderBottom: "1px solid rgba(255,255,255,0.08)",
-          }}
-        >
-          <nav ref={navRef} style={{ display: "flex", gap: "24px", flexWrap: "wrap" }}>
-            {["ABOUT", "WORK", "CONNECT"].map((item) => (
-  <a
-    key={item}
-    href={`#${item.toLowerCase()}`}
-    className="fp-link"
-    style={{
-      color: "#9CA3AF",
-      fontFamily: "'JetBrains Mono','Fira Code',ui-monospace,monospace",
-      fontSize: "13px",
-      textDecoration: "none",
-      letterSpacing: "0.02em",
-      transition: "color 150ms ease",
-    }}
-  >
-    .{item}()
-  </a>
-))}
-          </nav>
-
-          <div ref={socialsRef} style={{ display: "flex", gap: "10px" }}>
-            {SOCIALS.map(({ label, href, Icon }) => (
-              <a
-                key={label}
-                href={href}
-                target="_blank"
-                rel="noreferrer"
-                aria-label={label}
-                className="fp-social"
-                style={{
-                  width: "38px",
-                  height: "38px",
-                  display: "grid",
-                  placeItems: "center",
-                  border: "1px solid rgba(255,255,255,0.14)",
-                  color: "#9CA3AF",
-                  transition: "all 150ms ease",
-                }}
-              >
-                <Icon size={16} />
-              </a>
-            ))}
+            <p style={{ margin: 0 }}>
+              saad@fullstack:~$ status --available
+              <span style={{ color: "#4ADE80" }}> ● online</span>
+            </p>
+            <p style={{ margin: 0 }}>
+              © {new Date().getFullYear()} Saad Bin Khalid — {time}
+            </p>
           </div>
         </div>
 
-        <div
-          ref={bottomRef}
-          style={{
-            display: "flex",
-            flexWrap: "wrap",
-            gap: "8px",
-            justifyContent: "space-between",
-            alignItems: "center",
-            paddingTop: "24px",
-            fontFamily: "'JetBrains Mono','Fira Code',ui-monospace,monospace",
-            fontSize: "12px",
-            color: "#4B5563",
-          }}
-        >
-          <p style={{ margin: 0 }}>
-            saad@fullstack:~$ status --available
-            <span style={{ color: "#4ADE80" }}> ● online</span>
-          </p>
-          <p style={{ margin: 0 }}>
-            © {new Date().getFullYear()} Saad Bin Khalid — {time}
-          </p>
-        </div>
-      </div>
-
-      <CollaborateModal open={modalOpen} onClose={() => setModalOpen(false)} />
-    </footer>
+        <CollaborateModal open={modalOpen} onClose={() => setModalOpen(false)} />
+      </footer>
     </div>
   );
 };

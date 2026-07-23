@@ -11,6 +11,11 @@ import projectThreeLogo from "../assets/project3.png";
 import projectFourLogo from "../assets/project4.png";
 import projectFiveLogo from "../assets/project5.png";
 
+// Ensure ScrollTrigger plugin is registered safely
+if (typeof window !== "undefined") {
+  gsap.registerPlugin(ScrollTrigger);
+}
+
 export const FeaturedProjects = () => {
   const sectionRef = useRef(null);
   const trackRef = useRef(null);
@@ -76,7 +81,8 @@ export const FeaturedProjects = () => {
     "@context": "https://schema.org",
     "@type": "ItemList",
     "name": "Featured Projects & Production Logs",
-    "description": "Selected software development projects showcasing real-time apps, AI solutions, computer vision, and e-commerce platforms.",
+    "description":
+      "Selected software development projects showcasing real-time apps, AI solutions, computer vision, and e-commerce platforms.",
     "itemListElement": projects.map((project, index) => ({
       "@type": "ListItem",
       "position": index + 1,
@@ -97,14 +103,9 @@ export const FeaturedProjects = () => {
     const track = trackRef.current;
     if (!section || !track) return;
 
-    const ctx = gsap.context(() => {
+    let ctx = gsap.context(() => {
       const getScrollAmount = () => {
-        const cards = gsap.utils.toArray(".project-item");
-        let totalWidth = 0;
-        cards.forEach((card) => {
-          totalWidth += card.getBoundingClientRect().width;
-        });
-        return totalWidth - window.innerWidth;
+        return track.scrollWidth - window.innerWidth;
       };
 
       const mainTimeline = gsap.timeline({
@@ -199,11 +200,22 @@ export const FeaturedProjects = () => {
             "-=0.2"
           );
       });
-
-      ScrollTrigger.refresh();
     }, section);
 
-    return () => ctx.revert();
+    // FIX 1: Force ScrollTrigger to refresh after a tiny delay so modern layouts stabilize
+    const timer = setTimeout(() => {
+      ScrollTrigger.refresh();
+    }, 200);
+
+    // FIX 2: Refresh again once fonts/images fully finish loading globally
+    const handleLoad = () => ScrollTrigger.refresh();
+    window.addEventListener("load", handleLoad);
+
+    return () => {
+      clearTimeout(timer);
+      window.removeEventListener("load", handleLoad);
+      ctx.revert();
+    };
   }, [projects.length]);
 
   return (
@@ -211,7 +223,7 @@ export const FeaturedProjects = () => {
       ref={sectionRef}
       id="featured-projects"
       aria-label="Featured Projects Portfolio"
-      className="relative w-full bg-[#050505]  text-[#f5f5f7] mt-20"
+      className="relative w-full bg-[#050505] text-[#f5f5f7] mt-20"
     >
       <script
         type="application/ld+json"
@@ -219,17 +231,16 @@ export const FeaturedProjects = () => {
       />
 
       <div id="work" className="relative h-screen w-full flex flex-col justify-between pt-4 pb-12 sm:pb-8">
-
         <div className="relative w-full flex-1 min-h-0 overflow-hidden">
-        
-        <header className="mt-20 z-20 px-4 text-center shrink-0">
-          <p className="font-instrument text-zinc-400 uppercase tracking-[0.25em] text-xs">
-            03 - Production Logs
-          </p>
-          <h2 className="mt-1 font-ancizar text-2xl sm:text-4xl font-bold tracking-tight">
-            Selected Projects
-          </h2>
-        </header>
+          <header className="mt-20 z-20 px-4 text-center shrink-0">
+            <p className="font-instrument text-zinc-400 uppercase tracking-[0.25em] text-xs">
+              03 - Production Logs
+            </p>
+            <h2 className="mt-1 font-ancizar text-2xl sm:text-4xl font-bold tracking-tight">
+              Selected Projects
+            </h2>
+          </header>
+
           <div
             ref={trackRef}
             className="flex flex-row flex-nowrap h-full w-max will-change-transform"
@@ -247,7 +258,6 @@ export const FeaturedProjects = () => {
                 />
 
                 <div className="relative z-10 mx-auto grid w-full max-w-[calc(100vw-2rem)] sm:max-w-7xl grid-cols-1 lg:grid-cols-12 gap-3 lg:gap-12 items-center">
-                  
                   <div className="lg:col-span-7 flex justify-center w-full">
                     <div className="project-image-box group relative w-full max-w-sm lg:max-w-2xl overflow-hidden rounded-2xl sm:rounded-3xl border border-white/10 bg-linear-to-b from-white/10 via-zinc-900/80 to-black p-2 sm:p-6 backdrop-blur-xl shadow-2xl transition-all duration-500">
                       <div className="project-image-inner relative w-full aspect-16/10 overflow-hidden rounded-xl sm:rounded-2xl bg-black/50">
@@ -265,7 +275,7 @@ export const FeaturedProjects = () => {
                   </div>
 
                   <div className="lg:col-span-5 flex flex-col justify-center text-left">
-                    <span className="font-instrument project-category   text-[10px] sm:text-xs uppercase tracking-[0.2em] text-zinc-400">
+                    <span className="font-instrument project-category text-[10px] sm:text-xs uppercase tracking-[0.2em] text-zinc-400">
                       {project.category}
                     </span>
 
@@ -277,7 +287,10 @@ export const FeaturedProjects = () => {
                       {project.description}
                     </p>
 
-                    <nav aria-label={`${project.title} action links`} className="mt-3 sm:mt-8 flex flex-wrap items-center gap-2.5 sm:gap-3">
+                    <nav
+                      aria-label={`${project.title} action links`}
+                      className="mt-3 sm:mt-8 flex flex-wrap items-center gap-2.5 sm:gap-3"
+                    >
                       {project.liveUrl && (
                         <MagneticButton
                           href={project.liveUrl}
@@ -301,7 +314,6 @@ export const FeaturedProjects = () => {
                       </MagneticButton>
                     </nav>
                   </div>
-
                 </div>
               </article>
             ))}
@@ -324,7 +336,6 @@ export const FeaturedProjects = () => {
             />
           </div>
         </div>
-
       </div>
     </section>
   );
